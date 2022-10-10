@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text as ReactText} from 'react-native';
+import { Text as ReactText } from 'react-native';
 import Styled from 'styled-components';
 import StaticColor from '../utils/Colors';
 
@@ -36,16 +36,18 @@ const Text = props => {
     color,
     underline,
     lineThrough,
+    onPress,
     ...style
   } = props;
 
   return (
     <BaseText
+      onPress={onPress}
       style={[
-        letterSpacing && {letterSpacing},
-        underline && {textDecorationLine: 'underline'},
-        lineThrough && {textDecorationLine: 'line-through'},
-        {includeFontPadding: false},
+        letterSpacing && { letterSpacing },
+        underline && { textDecorationLine: 'underline' },
+        lineThrough && { textDecorationLine: 'line-through' },
+        { includeFontPadding: false },
       ]}
       {...style}
       align={align}

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -6,11 +6,12 @@ import {
   Image,
   Animated,
 } from 'react-native';
-import {IlOnboarding1, IlOnboarding2, IlOnboarding3} from '../assets';
-import {Scaffold, Text} from '../components';
+import { IlOnboarding1, IlOnboarding2, IlOnboarding3 } from '../assets';
+import { Scaffold, Text } from '../components';
 import Button from '../components/Button';
+import Indicator from '../components/CarouselIndicator';
 import StaticColor from '../utils/Colors';
-import {statusBarHeight} from '../utils/Constants';
+import { statusBarHeight } from '../utils/Constants';
 
 const data = [
   {
@@ -33,9 +34,9 @@ const data = [
   },
 ];
 
-const IntroductionApp = () => {
+const IntroductionApp = ({ navigation }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const {width, height} = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
   const flatListRef = useRef();
 
@@ -59,7 +60,7 @@ const IntroductionApp = () => {
 
   const goToNext = index => {
     if (flatListRef.current) {
-      flatListRef.current.scrollToIndex({animated: true, index});
+      flatListRef.current.scrollToIndex({ animated: true, index });
     }
   };
 
@@ -93,7 +94,7 @@ const IntroductionApp = () => {
         // contentContainerStyle={{
         //   height: height,
         // }}
-        renderItem={({item, index}) => {
+        renderItem={({ item, index }) => {
           return (
             <View
               style={{
@@ -115,7 +116,7 @@ const IntroductionApp = () => {
                     width: 270,
                     height: 330,
                   }}
-                  // resizeMode="contain"
+                // resizeMode="contain"
                 />
               </View>
             </View>
@@ -140,8 +141,8 @@ const IntroductionApp = () => {
           {activeIndex === 0
             ? data[0].title
             : activeIndex === 1
-            ? data[1].title
-            : data[2].title}
+              ? data[1].title
+              : data[2].title}
         </Text>
         <Text
           size={16}
@@ -149,14 +150,14 @@ const IntroductionApp = () => {
           type="regular"
           lineHeight={25}
           // letterSpacing={1}
-          style={{marginTop: 16}}>
+          style={{ marginTop: 16 }}>
           {activeIndex === 0
             ? data[0].description
             : activeIndex === 1
-            ? data[1].description
-            : data[2].description}
+              ? data[1].description
+              : data[2].description}
         </Text>
-        <View
+        <Animated.View
           style={{
             flexDirection: activeIndex !== 2 ? 'row' : 'column',
             alignItems: 'center',
@@ -167,29 +168,10 @@ const IntroductionApp = () => {
             right: 22,
           }}>
           {activeIndex !== 2 ? (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              {data.map((item, index) => (
-                <View
-                  style={{
-                    width: 12,
-                    height: 12,
-                    borderRadius: 12 / 2,
-                    backgroundColor:
-                      activeIndex === index
-                        ? StaticColor.secondaryColor
-                        : StaticColor.backgroundColor2,
-                    marginRight: 10,
-                  }}
-                />
-              ))}
-            </View>
+            <Indicator currentIndex={activeIndex} count={data.length} />
           ) : (
             <Button
-              onPress={() => console.warn('Sign Up')}
+              onPress={() => navigation.replace('SignUp')}
               style={{
                 width: activeIndex !== 2 ? 150 : '100%',
                 height: 50,
@@ -203,8 +185,9 @@ const IntroductionApp = () => {
             onPress={() => {
               if (activeIndex !== 2) {
                 goToNext(2);
+                setActiveIndex(2)
               } else {
-                console.warn('Sign In');
+                navigation.replace('SignIn')
               }
             }}
             color={activeIndex !== 2 ? 'white' : StaticColor.subtitleColor2}
@@ -217,7 +200,7 @@ const IntroductionApp = () => {
             }}>
             {activeIndex !== 2 ? 'Continue' : 'Sign In'}
           </Button>
-        </View>
+        </Animated.View>
       </View>
     </Scaffold>
   );

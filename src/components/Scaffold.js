@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {useNavigation} from '@react-navigation/native';
-import {View, StatusBar, SafeAreaView, useWindowDimensions} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { View, StatusBar, SafeAreaView, useWindowDimensions } from 'react-native';
 
 // import Header from '@src/components/Header';
 import ScreenIndicator from './ScreenIndicator';
 import ScreenEmptyData from './ScreenEmptyData';
 // import Popup from 'src/components/Popup';
 // import {useColor} from '@src/components/Color';
-import {isIphoneNotch, statusBarHeight} from '../utils/Constants';
+import { isIphoneNotch, statusBarHeight } from '../utils/Constants';
 import StaticColor from '../utils/Colors';
 
 const propTypes = {
@@ -32,6 +32,7 @@ const propTypes = {
   translucent: PropTypes.bool,
   statusBarColor: PropTypes.string,
   floatingActionButton: PropTypes.PropTypes.node,
+  barStyle: PropTypes.string
 };
 
 const defaultProps = {
@@ -43,7 +44,7 @@ const defaultProps = {
   empty: false,
   emptyTitle: 'Data tidak tersedia',
   emptyButtonLabel: '',
-  emptyButtonPress: () => {},
+  emptyButtonPress: () => { },
 
   popupProps: {
     visible: false,
@@ -76,18 +77,20 @@ const Scaffold = ({
   isLoading,
   style,
   floatingActionButton,
+  barStyle
 }) => {
   const navigation = useNavigation();
-  const {width, height} = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
   const MainView = useSafeArea ? SafeAreaView : View;
 
   return (
     <MainView
-      style={{flex: 1, backgroundColor: StaticColor.backgroundColor, ...style}}>
+      style={{ flex: 1, backgroundColor: StaticColor.backgroundColor, ...style }}>
       <StatusBar
         translucent={translucent}
         backgroundColor={statusBarColor || StaticColor.backgroundColor}
+        barStyle={barStyle || 'dark-content'}
       />
 
       {translucent && (
@@ -135,7 +138,7 @@ const Scaffold = ({
             height: translucent
               ? height + statusBarHeight
               : height -
-                (showHeader ? 60 + (isIphoneNotch() ? statusBarHeight : 0) : 0),
+              (showHeader ? 60 + (isIphoneNotch() ? statusBarHeight : 0) : 0),
             top: showHeader ? 60 + (isIphoneNotch() ? statusBarHeight : 0) : 0,
             backgroundColor: 'rgba(0,0,0,0.3)',
           }}>
@@ -144,7 +147,7 @@ const Scaffold = ({
       )}
 
       {translucent && (
-        <View style={{height: isIphoneNotch() ? statusBarHeight : 0}} />
+        <View style={{ height: isIphoneNotch() ? statusBarHeight : 0 }} />
       )}
 
       {floatingActionButton && (
