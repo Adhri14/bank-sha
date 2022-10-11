@@ -1,6 +1,6 @@
 import React from 'react';
-import {NativeModules, Platform, Dimensions, StatusBar} from 'react-native';
-const {StatusBarManager} = NativeModules;
+import { NativeModules, Platform, Dimensions, StatusBar } from 'react-native';
+const { StatusBarManager } = NativeModules;
 
 export const statusBarHeight = isIphoneNotch()
   ? 44
@@ -21,7 +21,7 @@ export function isIphoneNotch() {
       dimen.height === 896 ||
       dimen.width === 896 ||
       dimen.height === 926 ||
-      dimen.width === 926)
+      dimen.width === 926 || dimen.height === 852 || dimen.width === 393)
   );
 }
 

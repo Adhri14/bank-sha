@@ -6,19 +6,24 @@
  * @flow strict-local
  */
 
-import {NavigationContainer} from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import {SafeAreaView, StatusBar} from 'react-native';
+import { View, StatusBar, SafeAreaView } from 'react-native';
+import FlashMessage from 'react-native-flash-message';
 import AppNavigator from './src/navigator/AppNavigator';
 import StaticColor from './src/utils/Colors';
+import { isIphoneNotch } from './src/utils/Constants';
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView style={{backgroundColor: StaticColor.backgroundColor}} />
-      <AppNavigator />
-    </NavigationContainer>
+    <View style={{ flex: 1, backgroundColor: StaticColor.backgroundColor }}>
+      <NavigationContainer>
+        <StatusBar barStyle="dark-content" />
+        {/* <SafeAreaView style={{backgroundColor: StaticColor.backgroundColor}} /> */}
+        <AppNavigator />
+        <FlashMessage position="top" style={{ paddingTop: isIphoneNotch() ? 50 : 0 }} />
+      </NavigationContainer>
+    </View>
   );
 };
 

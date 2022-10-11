@@ -8,4 +8,11 @@ import SignUpIDCard from './Auth/SignUpIDCard';
 import SignIn from './Auth/SignIn';
 import PIN from './Auth/PIN';
 
-export { IntroductionApp, SignUp, SignUpProfile, SignUpIDCard, SignIn, PIN };
+// Main App
+import History from './MainApp/History';
+import Overview from './MainApp/Overview';
+import Reward from './MainApp/Reward';
+import Statistic from './MainApp/Statistic';
+import Transfer from './MainApp/Transfer';
+
+export { IntroductionApp, SignUp, SignUpProfile, SignUpIDCard, SignIn, PIN, History, Overview, Reward, Statistic, Transfer };

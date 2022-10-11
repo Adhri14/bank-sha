@@ -21,7 +21,7 @@ const SignIn = ({ navigation }) => {
     return (
         <Scaffold
             showHeader={false}
-            useSafeArea={false}
+            useSafeArea
             statusBarColor={StaticColor.backgroundColor}>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
                 <View style={styles.page}>
@@ -52,7 +52,7 @@ const SignIn = ({ navigation }) => {
                             selectionColor="rgba(83, 193, 249, 0.4)"
                         />
                         <Text type="regular" style={{ marginTop: -10 }} align="right" color={StaticColor.secondaryColor}>Forgot Password</Text>
-                        <Button style={{ borderRadius: 30, height: 50, marginTop: 20 }} onPress={() => navigation.replace('PIN')}>
+                        <Button style={{ borderRadius: 30, height: 50, marginTop: 20 }} onPress={() => navigation.replace('PIN', { nameScreen: 'sign-in' })}>
                             Sign In
                         </Button>
                     </View>

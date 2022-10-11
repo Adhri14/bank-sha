@@ -60,7 +60,13 @@ const IntroductionApp = ({ navigation }) => {
 
   const goToNext = index => {
     if (flatListRef.current) {
-      flatListRef.current.scrollToIndex({ animated: true, index });
+      if (index === 2) {
+        console.log('index : ', index);
+        // setActiveIndex(2)
+        flatListRef.current.scrollToIndex({ animated: true, index });
+      } else {
+        flatListRef.current.scrollToIndex({ animated: true, index });
+      }
     }
   };
 
@@ -69,7 +75,7 @@ const IntroductionApp = ({ navigation }) => {
   return (
     <Scaffold
       showHeader={false}
-      useSafeArea={false}
+      useSafeArea
       statusBarColor={StaticColor.backgroundColor}>
       <Animated.FlatList
         ref={flatListRef}
@@ -184,8 +190,10 @@ const IntroductionApp = ({ navigation }) => {
           <Button
             onPress={() => {
               if (activeIndex !== 2) {
+                // setTimeout(() => {
+                //   goToNext(2);
+                // }, 500)
                 goToNext(2);
-                setActiveIndex(2)
               } else {
                 navigation.replace('SignIn')
               }

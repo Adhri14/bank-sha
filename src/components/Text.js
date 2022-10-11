@@ -3,7 +3,7 @@ import { Text as ReactText } from 'react-native';
 import Styled from 'styled-components';
 import StaticColor from '../utils/Colors';
 
-const fontFamily = {
+export const fontFamily = {
   thin: '',
   extralight: '',
   light: 'Poppins-Light',

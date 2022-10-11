@@ -1,23 +1,36 @@
-import React, { useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { Alert, StyleSheet, TouchableOpacity, Vibration, View } from 'react-native';
 import Svg, { Path } from "react-native-svg";
-import { Button, Scaffold, Text } from '../../components';
+import { Button, Scaffold, Text, ToastMessage } from '../../components';
 import StaticColor from "../../utils/Colors";
 
-const PIN = () => {
+const PIN = ({ navigation, route }) => {
+    const { nameScreen } = route.params;
+    let myPin = '123456'
     const [pin, setPin] = useState('');
 
-    const numpad = [
-        { id: '1' },
-        { id: '2' },
-        { id: '3' },
-        { id: '4' },
-        { id: '5' },
-        { id: '6' },
-        { id: '7' },
-        { id: '8' },
-        { id: '9' },
-    ];
+    const numpad = [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }, { id: '5' }, { id: '6' }, { id: '7' }, { id: '8' }, { id: '9' },];
+
+    useEffect(() => {
+        if (pin.length === 6) {
+            if (pin !== myPin) {
+                Vibration.vibrate(1000);
+                ToastMessage.show({
+                    message: 'PIN yang anda masukkan salah. Silakan coba lagi.',
+                    backgroundColor: StaticColor.errorColor,
+                    type: 'error',
+                });
+            } else {
+                ToastMessage.show({
+                    message: 'PIN anda sesuai',
+                    backgroundColor: StaticColor.primaryColor,
+                });
+                if (nameScreen === 'sign-in') {
+                    navigation.replace('MainApp');
+                }
+            }
+        }
+    }, [pin])
 
     const addPIN = (val) => {
         if (pin.length < 6) {
@@ -27,30 +40,30 @@ const PIN = () => {
     }
 
     const removePIN = () => {
-        let newPIN = pin.substring(0, pin.length - 1);
+        let newPIN = pin.substring(0, pin.length - 1); // 6 - 1 > 5 - 1 > 4 - 1 > 3 -> menggunkan substring untuk memotong string dari PIN
         setPin(newPIN);
     }
 
-    let pinArr = pin.split('');
+    let pinStrToArr = pin.split(''); // 12345 > ['1', '2', '3', '4', '5'] > * * * * * -> memecah string menjadi data array
 
     return (
-        <Scaffold useSafeArea={false} showHeader={false} statusBarColor={StaticColor.backgroundColor4} barStyle="light-content" style={styles.page}>
+        <Scaffold useSafeArea={false} showHeader={false} statusBarColor={'red'} barStyle="light-content" style={styles.page}>
             <View style={styles.container}>
                 <Text color="white" size={20} type="semibold">Sha PIN</Text>
                 <View style={styles.input}>
-                    {pinArr.map((item, index) => <Text key={index.toString()} size={36} color="white" style={{ letterSpacing: 10 }}>{item === '' ? '' : '*'}</Text>)}
+                    {pinStrToArr.map((item, index) => <Text key={index.toString()} size={36} color="white" style={{ marginHorizontal: 5 }}>{'*'}</Text>)}
                 </View>
                 <View style={styles.numpad}>
                     {numpad.map(item => (
-                        <Button onPress={() => addPIN(item.id)} key={item.id} size={22} style={styles.button}>
+                        <Button onPress={() => { addPIN(item.id); Vibration.vibrate(); }} key={item.id} size={22} style={styles.button}>
                             {item.id}
                         </Button>
                     ))}
                     <View style={{ ...styles.button, backgroundColor: "transparent" }} />
-                    <Button size={22} style={styles.button} onPress={() => addPIN('0')}>
+                    <Button size={22} style={styles.button} onPress={() => { addPIN('0'); Vibration.vibrate(); }}>
                         0
                     </Button>
-                    <TouchableOpacity style={styles.button} onPress={removePIN}>
+                    <TouchableOpacity style={styles.button} onPress={() => { removePIN(); Vibration.vibrate(); }}>
                         <Svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <Path d="M19 12H5" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
                             <Path d="M12 19L5 12L12 5" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
@@ -67,7 +80,7 @@ export default PIN;
 const styles = StyleSheet.create({
     page: {
         flex: 1,
-        backgroundColor: StaticColor.backgroundColor4,
+        backgroundColor: 'red',
     },
     container: {
         flex: 1,
