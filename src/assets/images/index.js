@@ -14,8 +14,9 @@ import IcOverview from './ic_overview.png';
 import IcHistory from './ic_history.png';
 import IcCirclePlus from './ic_plus_circle.png';
 import IcStatistic from './ic_statistic.png';
+import IcCheck from './ic_check.png';
 
 // Dummy Image
 import DmPerson1 from './img_friend1.png';
 
-export { IlOnboarding1, IlOnboarding2, IlOnboarding3, LogoLight, LogoDark, IcUpload, DmPerson1, IcReward, IcOverview, IcHistory, IcCirclePlus, IcStatistic };
+export { IlOnboarding1, IlOnboarding2, IlOnboarding3, LogoLight, LogoDark, IcUpload, DmPerson1, IcReward, IcOverview, IcHistory, IcCirclePlus, IcStatistic, IcCheck };

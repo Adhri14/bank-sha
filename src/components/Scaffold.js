@@ -102,17 +102,18 @@ const Scaffold = ({
         />
       )}
 
-      {/* {showHeader && header ? (
+      {showHeader && header ? (
         header
       ) : showHeader ? (
-        <Header
-          title={headerTitle}
-          onPressLeftButton={() =>
-            onPressLeftButton ? onPressLeftButton() : navigation.pop()
-          }
-          iconRightButton={iconRightButton}
-        />
-      ) : null} */}
+        // <Header
+        //   title={headerTitle}
+        //   onPressLeftButton={() =>
+        //     onPressLeftButton ? onPressLeftButton() : navigation.pop()
+        //   }
+        //   iconRightButton={iconRightButton}
+        // />
+        <View />
+      ) : null}
 
       {fallback ? (
         <ScreenIndicator transparent />
