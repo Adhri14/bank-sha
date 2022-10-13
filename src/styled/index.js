@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Platform} from 'react-native';
+import { View, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import Styled from 'styled-components';
 
@@ -8,29 +8,29 @@ const Container = props => (
   <View
     {...props}
     style={[
-      props.flex && {flex: props.flex},
-      props.height && {height: props.height},
-      props.width && {width: props.width},
-      props.radius && {borderRadius: props.radius},
-      props.color && {backgroundColor: props.color},
-      props.align && {alignItems: props.align},
-      props.justify && {justifyContent: props.justify},
-      props.opacity && {opacity: props.opacity},
-      props.padding && {padding: props.padding},
-      props.paddingVertical && {paddingVertical: props.paddingVertical},
-      props.paddingHorizontal && {paddingHorizontal: props.paddingHorizontal},
-      props.paddingTop && {paddingTop: props.paddingTop},
-      props.paddingRight && {paddingRight: props.paddingRight},
-      props.paddingBottom && {paddingBottom: props.paddingBottom},
-      props.paddingLeft && {paddingLeft: props.paddingLeft},
-      props.margin && {margin: props.margin},
-      props.marginVertical && {marginVertical: props.marginVertical},
-      props.marginHorizontal && {marginHorizontal: props.marginHorizontal},
-      props.marginTop && {marginTop: props.marginTop},
-      props.marginRight && {marginRight: props.marginRight},
-      props.marginBottom && {marginBottom: props.marginBottom},
-      props.marginLeft && {marginLeft: props.marginLeft},
-      props.style && {...props.style},
+      props.flex && { flex: props.flex },
+      props.height && { height: props.height },
+      props.width && { width: props.width },
+      props.radius && { borderRadius: props.radius },
+      props.color && { backgroundColor: props.color },
+      props.align && { alignItems: props.align },
+      props.justify && { justifyContent: props.justify },
+      props.opacity && { opacity: props.opacity },
+      props.padding && { padding: props.padding },
+      props.paddingVertical && { paddingVertical: props.paddingVertical },
+      props.paddingHorizontal && { paddingHorizontal: props.paddingHorizontal },
+      props.paddingTop && { paddingTop: props.paddingTop },
+      props.paddingRight && { paddingRight: props.paddingRight },
+      props.paddingBottom && { paddingBottom: props.paddingBottom },
+      props.paddingLeft && { paddingLeft: props.paddingLeft },
+      props.margin && { margin: props.margin },
+      props.marginVertical && { marginVertical: props.marginVertical },
+      props.marginHorizontal && { marginHorizontal: props.marginHorizontal },
+      props.marginTop && { marginTop: props.marginTop },
+      props.marginRight && { marginRight: props.marginRight },
+      props.marginBottom && { marginBottom: props.marginBottom },
+      props.marginLeft && { marginLeft: props.marginLeft },
+      props.style && { ...props.style },
     ]}
   />
 );
@@ -76,27 +76,21 @@ const Shadow =
 const StyledCard = Styled(Shadow)`
     backgroundColor: ${props => props.color || '#FFFFFF'};
     borderRadius: ${props =>
-      typeof props.radius === 'string'
-        ? props.radius
-        : props.radius
+    typeof props.radius === 'string'
+      ? props.radius
+      : props.radius
         ? props.radius + 'px'
         : '0px'};
     padding: ${props =>
-      `${props.padding || props.paddingVertical || props.paddingTop || 0}px ${
-        props.padding || props.paddingHorizontal || props.paddingRight || 0
-      }px ${
-        props.padding || props.paddingVertical || props.paddingBottom || 0
-      }px ${
-        props.padding || props.paddingHorizontal || props.paddingLeft || 0
-      }px`};
+    `${props.padding || props.paddingVertical || props.paddingTop || 0}px ${props.padding || props.paddingHorizontal || props.paddingRight || 0
+    }px ${props.padding || props.paddingVertical || props.paddingBottom || 0
+    }px ${props.padding || props.paddingHorizontal || props.paddingLeft || 0
+    }px`};
     margin: ${props =>
-      `${props.margin || props.marginVertical || props.marginTop || 0}px ${
-        props.margin || props.marginHorizontal || props.marginRight || 0
-      }px ${
-        props.margin || props.marginVertical || props.marginBottom || 0
-      }px ${
-        props.margin || props.marginHorizontal || props.marginLeft || 0
-      }px`};
+    `${props.margin || props.marginVertical || props.marginTop || 0}px ${props.margin || props.marginHorizontal || props.marginRight || 0
+    }px ${props.margin || props.marginVertical || props.marginBottom || 0
+    }px ${props.margin || props.marginHorizontal || props.marginLeft || 0
+    }px`};
 `;
 const Card = props => <StyledCard {...props} />;
 Card.propTypes = {
@@ -171,11 +165,12 @@ const SRow = Styled(View)`
     justifyContent: ${props => props.justify || 'flex-start'};
     backgroundColor: ${props => props.color || 'transparent'};
 `;
-const Row = props => <SRow {...props} />;
+const Row = props => <SRow {...props} style={props.style} />;
 Row.propTypes = {
   color: PropTypes.string,
   align: PropTypes.string,
   justify: PropTypes.string,
+  style: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string])
 };
 
 // ==================== Column ====================
@@ -214,15 +209,15 @@ Circle.propTypes = {
 // ==================== Line ====================
 const SLine = Styled(View)`
     height: ${props =>
-      typeof props.height === 'string'
-        ? props.height
-        : props.height
+    typeof props.height === 'string'
+      ? props.height
+      : props.height
         ? props.height + 'px'
         : '2px'};
     width: ${props =>
-      typeof props.width === 'string'
-        ? props.width
-        : props.width
+    typeof props.width === 'string'
+      ? props.width
+      : props.width
         ? props.width + 'px'
         : '2px'};
     borderRadius: ${props => props.radius || 0}px;
@@ -240,21 +235,21 @@ Line.propTypes = {
 // ==================== Box ====================
 const SBox = Styled(View)`
     minHeight: ${props =>
-      typeof props.size === 'string'
-        ? props.size
-        : props.size
+    typeof props.size === 'string'
+      ? props.size
+      : props.size
         ? props.size + 'px'
         : '2px'};
     minWidth: ${props =>
-      typeof props.size === 'string'
-        ? props.size
-        : props.size
+    typeof props.size === 'string'
+      ? props.size
+      : props.size
         ? props.size + 'px'
         : '2px'};
     borderRadius: ${props =>
-      typeof props.radius === 'string'
-        ? props.radius
-        : props.radius
+    typeof props.radius === 'string'
+      ? props.radius
+      : props.radius
         ? props.radius + 'px'
         : '0px'};
     backgroundColor: ${props => props.color || 'transparent'};

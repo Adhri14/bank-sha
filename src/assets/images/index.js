@@ -25,8 +25,14 @@ import IcStream from './ic_product_stream.png';
 import IcMovie from './ic_product_movie.png';
 import IcFood from './ic_product_food.png';
 import IcTravel from './ic_product_travel.png';
+import IcTCat1 from './ic_transaction_cat1.png'
+import IcTCat2 from './ic_transaction_cat2.png'
+import IcTCat3 from './ic_transaction_cat3.png'
+import IcTCat4 from './ic_transaction_cat4.png'
+import IcTCat5 from './ic_transaction_cat5.png'
+
 
 // Dummy Image
 import DmPerson1 from './img_friend1.png';
 
-export { IlOnboarding1, IlOnboarding2, IlOnboarding3, LogoLight, LogoDark, IcUpload, DmPerson1, IcReward, IcOverview, IcHistory, IcCirclePlus, IcStatistic, IcCheck, IcTopUp, IcSend, IcWithdraw, IcMore, IcData, IcWater, IcStream, IcMovie, IcFood, IcTravel, };
+export { IlOnboarding1, IlOnboarding2, IlOnboarding3, LogoLight, LogoDark, IcUpload, DmPerson1, IcReward, IcOverview, IcHistory, IcCirclePlus, IcStatistic, IcCheck, IcTopUp, IcSend, IcWithdraw, IcMore, IcData, IcWater, IcStream, IcMovie, IcFood, IcTravel, IcTCat1, IcTCat2, IcTCat3, IcTCat4, IcTCat5 };

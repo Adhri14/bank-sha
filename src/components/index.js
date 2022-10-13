@@ -8,5 +8,6 @@ import Gap from './Gap';
 import IDCard from './IDCard';
 import ProgressBar from './ProgressBar';
 import ShorcutItem from './ShorcutItem';
+import HistoryTransaction from './HistoryTransaction';
 
-export { Scaffold, Text, TextInput, Button, ToastMessage, TabNavigator, Gap, IDCard, ProgressBar, ShorcutItem };
+export { Scaffold, Text, TextInput, Button, ToastMessage, TabNavigator, Gap, IDCard, ProgressBar, ShorcutItem, HistoryTransaction };

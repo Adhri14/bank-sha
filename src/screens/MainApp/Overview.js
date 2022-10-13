@@ -1,10 +1,10 @@
 import { Animated, Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
-import { Gap, IDCard, ProgressBar, Scaffold, ShorcutItem, Text } from '../../components'
+import { Gap, HistoryTransaction, IDCard, ProgressBar, Scaffold, ShorcutItem, Text } from '../../components'
 import StaticColor from '../../utils/Colors'
 import HeaderHome from '../../components/HeaderHome'
 import { Container, Row } from '../../styled'
-import { IcData, IcFood, IcMore, IcMovie, IcSend, IcStream, IcTopUp, IcTravel, IcWater, IcWithdraw } from '../../assets'
+import { IcData, IcFood, IcMore, IcMovie, IcSend, IcStream, IcTCat1, IcTCat2, IcTCat3, IcTCat4, IcTCat5, IcTopUp, IcTravel, IcWater, IcWithdraw } from '../../assets'
 
 const ModalMore = ({ visible, onRequestClose, onPress, children }) => {
     const animBackDrop = useRef(new Animated.Value(0)).current;
@@ -63,7 +63,7 @@ const Overview = ({ navigation }) => {
                     <ShorcutItem title="Travel" icon={IcTravel} />
                 </Row>
             </ModalMore>
-            <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+            <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 30 }} showsVerticalScrollIndicator={false}>
                 <Container flex={1} marginHorizontal={24}>
                     <IDCard />
                     <Gap height={20} />
@@ -83,6 +83,16 @@ const Overview = ({ navigation }) => {
                         <ShorcutItem title="Withdraw" icon={IcWithdraw} />
                         <ShorcutItem onPress={() => setVisible(true)} title="More" icon={IcMore} />
                     </Row>
+                    <Gap height={30} />
+                    <Text size={16} type="semibold" align="left">Latest Transactions</Text>
+                    <Gap height={14} />
+                    <View style={[styles.content, { backgroundColor: 'white', borderRadius: 20, padding: 22, paddingTop: 4 }]}>
+                        <HistoryTransaction icon={IcTCat1} type="Top Up" time="Yesterday" value="+ 450.000" />
+                        <HistoryTransaction icon={IcTCat2} type="Cashback" time="Sep 11" value="+ 22.000" />
+                        <HistoryTransaction icon={IcTCat3} type="Withdraw" time="Sep 2" value="- 5.000" />
+                        <HistoryTransaction icon={IcTCat4} type="Transfer" time="Aug 11" value="- 123.500" />
+                        <HistoryTransaction icon={IcTCat5} type="Electric" time="Feb 11" value="- 12.300.000" />
+                    </View>
                 </Container>
             </ScrollView>
         </Scaffold>
