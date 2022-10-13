@@ -11,7 +11,7 @@ const ProgressBar = ({ step, steps }) => {
     useEffect(() => {
         Animated.timing(animatedValue, {
             toValue: reactive,
-            duration: 300,
+            duration: 1500,
             useNativeDriver: true,
         }).start();
     }, []);

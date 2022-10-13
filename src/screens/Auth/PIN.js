@@ -47,7 +47,7 @@ const PIN = ({ navigation, route }) => {
     let pinStrToArr = pin.split(''); // 12345 > ['1', '2', '3', '4', '5'] > * * * * * -> memecah string menjadi data array
 
     return (
-        <Scaffold useSafeArea={false} showHeader={false} statusBarColor={'red'} barStyle="light-content" style={styles.page}>
+        <Scaffold useSafeArea={false} showHeader={false} statusBarColor={StaticColor.backgroundColor4} barStyle="light-content" style={styles.page}>
             <View style={styles.container}>
                 <Text color="white" size={20} type="semibold">Sha PIN</Text>
                 <View style={styles.input}>

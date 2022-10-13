@@ -5,6 +5,7 @@ import {
   useWindowDimensions,
   Image,
   Animated,
+  Platform,
 } from 'react-native';
 import { IlOnboarding1, IlOnboarding2, IlOnboarding3 } from '../assets';
 import { Scaffold, Text } from '../components';
@@ -12,6 +13,7 @@ import Button from '../components/Button';
 import Indicator from '../components/CarouselIndicator';
 import StaticColor from '../utils/Colors';
 import { statusBarHeight } from '../utils/Constants';
+
 
 const data = [
   {
@@ -194,6 +196,14 @@ const IntroductionApp = ({ navigation }) => {
                 //   goToNext(2);
                 // }, 500)
                 goToNext(2);
+                if (Platform.OS === 'ios' && !Platform.isPad && height === 852 || width === 393) {
+                  // logic untuk type HP iPhone 14 ke atas
+                  goToNext(2);
+                } else {
+                  // selain dari type HP iPhone 14 ke atas
+                  goToNext(2);
+                  setActiveIndex(2);
+                }
               } else {
                 navigation.replace('SignIn')
               }
