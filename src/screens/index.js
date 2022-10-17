@@ -15,4 +15,7 @@ import Reward from './MainApp/Reward';
 import Statistic from './MainApp/Statistic';
 import Transfer from './MainApp/Transfer';
 
-export { IntroductionApp, SignUp, SignUpProfile, SignUpIDCard, SignIn, PIN, History, Overview, Reward, Statistic, Transfer };
+// Top Up
+import TopUp from './Transaction/TopUp';
+
+export { IntroductionApp, SignUp, SignUpProfile, SignUpIDCard, SignIn, PIN, History, Overview, Reward, Statistic, Transfer, TopUp };

@@ -9,5 +9,7 @@ import IDCard from './IDCard';
 import ProgressBar from './ProgressBar';
 import ShorcutItem from './ShorcutItem';
 import HistoryTransaction from './HistoryTransaction';
+import CardPeople from './CardPeople';
+import CardBlog from './CardBlog';
 
-export { Scaffold, Text, TextInput, Button, ToastMessage, TabNavigator, Gap, IDCard, ProgressBar, ShorcutItem, HistoryTransaction };
+export { Scaffold, Text, TextInput, Button, ToastMessage, TabNavigator, Gap, IDCard, ProgressBar, ShorcutItem, HistoryTransaction, CardPeople, CardBlog };
