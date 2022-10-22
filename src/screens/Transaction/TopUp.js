@@ -34,7 +34,7 @@ const TAB_BANK = [
         name: 'Bank Mandiri',
         time: '50 mins',
         width: 106,
-        height: 30,
+        height: 31,
         img: LogoBankMandiri,
     },
     {
@@ -47,7 +47,7 @@ const TAB_BANK = [
     },
 ];
 
-const TopUp = () => {
+const TopUp = ({ navigation }) => {
     const [currentIndex, setCurrentIndex] = useState(null);
     return (
         <Scaffold
@@ -59,7 +59,7 @@ const TopUp = () => {
             contentContainerStyle={{ paddingBottom: 30 }}
         >
             <Container flex={1} marginHorizontal={24}>
-                <Gap height={40} />
+                <Gap height={30} />
                 <Text align="left" size={16} type="semibold">
                     Wallet
                 </Text>
@@ -67,12 +67,14 @@ const TopUp = () => {
                 <Row justify="space-between">
                     <Image source={IlWallet} style={styles.wallet} />
                     <View style={{ flex: 1 }}>
-                        <Text align="left" size={16}>
+                        <Text align="left" size={16} type="medium">
                             0000 0000 0000 0000
                         </Text>
+                        <Gap height={5} />
                         <Text
                             align="left"
                             size={12}
+                            type="regular"
                             color={StaticColor.subtitleColor}
                         >
                             Adhri
@@ -108,7 +110,7 @@ const TopUp = () => {
                                     }}
                                 />
                                 <View>
-                                    <Text align="right" size={16}>
+                                    <Text align="right" size={16} type="medium">
                                         {item.name}
                                     </Text>
                                     <Gap height={5} />
@@ -125,7 +127,13 @@ const TopUp = () => {
                         </Pressable>
                     ))}
                     <Gap height={12} />
-                    <Button>Continue</Button>
+                    {currentIndex !== null && (
+                        <Button
+                            onPress={() => navigation.navigate('TopUpAmount')}
+                        >
+                            Continue
+                        </Button>
+                    )}
                 </Column>
             </Container>
         </Scaffold>

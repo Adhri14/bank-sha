@@ -1,27 +1,44 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { IntroductionApp, PIN, SignIn, SignUp, SignUpIDCard, SignUpProfile, TopUp } from '../../screens';
+import {
+    BuyPulsa,
+    IntroductionApp,
+    PaketData,
+    PIN,
+    SignIn,
+    SignUp,
+    SignUpIDCard,
+    SignUpProfile,
+    TopUp,
+    TopUpAmount,
+    TopUpSuccess,
+} from '../../screens';
 import BottomNavigator from '../BottomNavigator';
 
 const { Navigator, Screen } = createStackNavigator();
 
 export default function AppNavigator() {
-  return (
-    <Navigator screenOptions={{ header: () => null }}>
+    return (
+        <Navigator screenOptions={{ header: () => null }}>
+            {/* Intro App */}
+            <Screen name="IntroductionApp" component={IntroductionApp} />
 
-      {/* Intro App */}
-      <Screen name="IntroductionApp" component={IntroductionApp} />
+            {/* Authentication User */}
+            <Screen name="SignUp" component={SignUp} />
+            <Screen name="SignUpProfile" component={SignUpProfile} />
+            <Screen name="SignUpIDCard" component={SignUpIDCard} />
+            <Screen name="SignIn" component={SignIn} />
+            <Screen name="PIN" component={PIN} />
 
-      {/* Authentication User */}
-      <Screen name="SignUp" component={SignUp} />
-      <Screen name="SignUpProfile" component={SignUpProfile} />
-      <Screen name="SignUpIDCard" component={SignUpIDCard} />
-      <Screen name="SignIn" component={SignIn} />
-      <Screen name="PIN" component={PIN} />
-      <Screen name="TopUp" component={TopUp} />
+            {/* Main Application */}
+            <Screen name="MainApp" component={BottomNavigator} />
 
-      {/* Main Application */}
-      <Screen name='MainApp' component={BottomNavigator} />
-    </Navigator>
-  );
+            {/* Transaction */}
+            <Screen name="TopUp" component={TopUp} />
+            <Screen name="TopUpAmount" component={TopUpAmount} />
+            <Screen name="TopUpSuccess" component={TopUpSuccess} />
+            <Screen name="BuyPulsa" component={BuyPulsa} />
+            <Screen name="PaketData" component={PaketData} />
+        </Navigator>
+    );
 }

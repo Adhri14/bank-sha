@@ -11,6 +11,9 @@ import LogoBankBCA from './img_bank_bca.png';
 import LogoBankBNI from './img_bank_bni.png';
 import LogoBankMandiri from './img_bank_mandiri.png';
 import LogoBankOCBC from './img_bank_ocbc.png';
+import LogoTelkomsel from './img_provider_telkomsel.png';
+import LogoIndosat from './img_provider_indosat.png';
+import LogoSingTel from './img_provider_singtel.png';
 
 // Icons
 import IcUpload from './ic_upload.png';
@@ -81,4 +84,7 @@ export {
     LogoBankBNI,
     LogoBankMandiri,
     LogoBankOCBC,
+    LogoIndosat,
+    LogoTelkomsel,
+    LogoSingTel,
 };

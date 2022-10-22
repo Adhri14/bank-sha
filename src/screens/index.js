@@ -17,5 +17,26 @@ import Transfer from './MainApp/Transfer';
 
 // Top Up
 import TopUp from './Transaction/TopUp';
+import TopUpAmount from './Transaction/TopUpAmount';
+import TopUpSuccess from './Transaction/TopUpSuccess';
+import BuyPulsa from './Transaction/BuyPulsa';
+import PaketData from './Transaction/PaketData';
 
-export { IntroductionApp, SignUp, SignUpProfile, SignUpIDCard, SignIn, PIN, History, Overview, Reward, Statistic, Transfer, TopUp };
+export {
+    BuyPulsa,
+    PaketData,
+    IntroductionApp,
+    SignUp,
+    SignUpProfile,
+    SignUpIDCard,
+    SignIn,
+    PIN,
+    History,
+    Overview,
+    Reward,
+    Statistic,
+    Transfer,
+    TopUp,
+    TopUpAmount,
+    TopUpSuccess,
+};

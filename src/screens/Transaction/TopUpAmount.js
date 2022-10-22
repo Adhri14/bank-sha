@@ -7,13 +7,12 @@ import {
     View,
 } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { Button, Scaffold, Text, ToastMessage } from '../../components';
+import { Button, Gap, Scaffold, Text, ToastMessage } from '../../components';
+import { Row } from '../../styled';
 import StaticColor from '../../utils/Colors';
 
-const PIN = ({ navigation, route }) => {
-    const { nameScreen } = route.params;
-    let myPin = '123456';
-    const [pin, setPin] = useState('');
+const TopUpAmount = ({ navigation }) => {
+    const [amount, setAmount] = useState('');
 
     const numpad = [
         { id: '1' },
@@ -27,46 +26,17 @@ const PIN = ({ navigation, route }) => {
         { id: '9' },
     ];
 
-    useEffect(() => {
-        if (pin.length === 6) {
-            if (pin !== myPin) {
-                Vibration.vibrate(1000);
-                ToastMessage.show({
-                    message: 'PIN yang anda masukkan salah. Silakan coba lagi.',
-                    backgroundColor: StaticColor.errorColor,
-                    type: 'error',
-                });
-            } else {
-                ToastMessage.show({
-                    message: 'PIN anda sesuai',
-                    backgroundColor: StaticColor.primaryColor,
-                });
-                if (nameScreen === 'sign-in') {
-                    navigation.replace('MainApp');
-                } else if (nameScreen === 'top-up') {
-                    navigation.replace('TopUpSuccess');
-                } else if (nameScreen === 'paket-data') {
-                    navigation.replace('MainApp');
-                } else {
-                    navigation.navigate('MainApp');
-                }
-            }
-        }
-    }, [pin]);
-
-    const addPIN = val => {
-        if (pin.length < 6) {
-            let newPIN = pin + val;
-            setPin(newPIN);
-        }
+    const addAmount = val => {
+        let newAmount = amount + val;
+        setAmount(newAmount);
     };
 
-    const removePIN = () => {
-        let newPIN = pin.substring(0, pin.length - 1); // 6 - 1 > 5 - 1 > 4 - 1 > 3 -> menggunkan substring untuk memotong string dari PIN
-        setPin(newPIN);
+    const removeAmount = () => {
+        let newAmount = amount.substring(0, amount.length - 1);
+        setAmount(newAmount);
     };
 
-    let pinStrToArr = pin.split(''); // 12345 > ['1', '2', '3', '4', '5'] > * * * * * -> memecah string menjadi data array
+    let amountToStr = amount.split('');
 
     return (
         <Scaffold
@@ -78,25 +48,30 @@ const PIN = ({ navigation, route }) => {
         >
             <View style={styles.container}>
                 <Text color="white" size={20} type="semibold">
-                    Sha PIN
+                    Total Amount
                 </Text>
                 <View style={styles.input}>
-                    {pinStrToArr.map((item, index) => (
-                        <Text
-                            key={index.toString()}
-                            size={36}
-                            color="white"
-                            style={{ marginHorizontal: 5 }}
-                        >
-                            {'*'}
-                        </Text>
-                    ))}
+                    <Text size={36} color="white" type="light">
+                        Rp.{' '}
+                    </Text>
+                    <Row>
+                        {amountToStr.map((item, index) => (
+                            <Text
+                                key={index.toString()}
+                                size={36}
+                                color="white"
+                                type="medium"
+                            >
+                                {item === '' ? '0' : item}
+                            </Text>
+                        ))}
+                    </Row>
                 </View>
                 <View style={styles.numpad}>
                     {numpad.map(item => (
                         <Button
                             onPress={() => {
-                                addPIN(item.id);
+                                addAmount(item.id);
                                 Vibration.vibrate();
                             }}
                             key={item.id}
@@ -106,26 +81,30 @@ const PIN = ({ navigation, route }) => {
                             {item.id}
                         </Button>
                     ))}
-                    <View
-                        style={{
-                            ...styles.button,
-                            backgroundColor: 'transparent',
-                        }}
-                    />
                     <Button
                         size={22}
                         style={styles.button}
                         onPress={() => {
-                            addPIN('0');
+                            addAmount('0');
                             Vibration.vibrate();
                         }}
                     >
                         0
                     </Button>
+                    <Button
+                        size={22}
+                        style={styles.button}
+                        onPress={() => {
+                            addAmount('000');
+                            Vibration.vibrate();
+                        }}
+                    >
+                        000
+                    </Button>
                     <TouchableOpacity
                         style={styles.button}
                         onPress={() => {
-                            removePIN();
+                            removeAmount();
                             Vibration.vibrate();
                         }}
                     >
@@ -153,12 +132,29 @@ const PIN = ({ navigation, route }) => {
                         </Svg>
                     </TouchableOpacity>
                 </View>
+                <Gap height={40} />
+                <Button
+                    onPress={() =>
+                        navigation.navigate('PIN', { nameScreen: 'top-up' })
+                    }
+                >
+                    Checkout Now
+                </Button>
+                <Gap height={20} />
+                <Text
+                    size={16}
+                    type="regular"
+                    color={StaticColor.subtitleColor2}
+                >
+                    Terms & Conditions
+                </Text>
+                <Gap height={10} />
             </View>
         </Scaffold>
     );
 };
 
-export default PIN;
+export default TopUpAmount;
 
 const styles = StyleSheet.create({
     page: {
@@ -175,20 +171,21 @@ const styles = StyleSheet.create({
     },
     input: {
         width: 200,
-        height: 45,
+        maxWidth: 300,
         borderBottomWidth: 1,
         borderBottomColor: '#262939',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: 100,
+        marginTop: 80,
         flexDirection: 'row',
+        paddingVertical: 10,
     },
     numpad: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         flexWrap: 'wrap',
-        marginTop: 66,
+        marginTop: 40,
     },
     button: {
         width: 60,
