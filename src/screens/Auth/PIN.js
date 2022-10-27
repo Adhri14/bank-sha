@@ -8,11 +8,11 @@ import {
 } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { Button, Scaffold, Text, ToastMessage } from '../../components';
+import { getDataFromLocalStorge } from '../../storage';
 import StaticColor from '../../utils/Colors';
 
 const PIN = ({ navigation, route }) => {
     const { nameScreen } = route.params;
-    let myPin = '123456';
     const [pin, setPin] = useState('');
 
     const numpad = [
@@ -28,30 +28,35 @@ const PIN = ({ navigation, route }) => {
     ];
 
     useEffect(() => {
-        if (pin.length === 6) {
-            if (pin !== myPin) {
-                Vibration.vibrate(1000);
-                ToastMessage.show({
-                    message: 'PIN yang anda masukkan salah. Silakan coba lagi.',
-                    backgroundColor: StaticColor.errorColor,
-                    type: 'error',
-                });
-            } else {
-                ToastMessage.show({
-                    message: 'PIN anda sesuai',
-                    backgroundColor: StaticColor.primaryColor,
-                });
-                if (nameScreen === 'sign-in') {
-                    navigation.replace('MainApp');
-                } else if (nameScreen === 'top-up') {
-                    navigation.replace('TopUpSuccess');
-                } else if (nameScreen === 'paket-data') {
-                    navigation.replace('MainApp');
+        getDataFromLocalStorge('userProfile').then(res => {
+            console.log('data : ', res);
+            const myPin = res?.pin;
+            if (pin.length === 6) {
+                if (pin !== myPin) {
+                    Vibration.vibrate(1000);
+                    ToastMessage.show({
+                        message:
+                            'PIN yang anda masukkan salah. Silakan coba lagi.',
+                        backgroundColor: StaticColor.errorColor,
+                        type: 'error',
+                    });
                 } else {
-                    navigation.navigate('MainApp');
+                    ToastMessage.show({
+                        message: 'PIN anda sesuai',
+                        backgroundColor: StaticColor.primaryColor,
+                    });
+                    if (nameScreen === 'sign-in') {
+                        navigation.replace('MainApp');
+                    } else if (nameScreen === 'top-up') {
+                        navigation.replace('TopUpSuccess');
+                    } else if (nameScreen === 'paket-data') {
+                        navigation.replace('MainApp');
+                    } else {
+                        navigation.navigate('MainApp');
+                    }
                 }
             }
-        }
+        });
     }, [pin]);
 
     const addPIN = val => {

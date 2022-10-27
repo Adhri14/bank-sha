@@ -11,5 +11,21 @@ import ShorcutItem from './ShorcutItem';
 import HistoryTransaction from './HistoryTransaction';
 import CardPeople from './CardPeople';
 import CardBlog from './CardBlog';
+import ScreenIndicator from './ScreenIndicator';
 
-export { Scaffold, Text, TextInput, Button, ToastMessage, TabNavigator, Gap, IDCard, ProgressBar, ShorcutItem, HistoryTransaction, CardPeople, CardBlog };
+export {
+    Scaffold,
+    Text,
+    TextInput,
+    Button,
+    ToastMessage,
+    TabNavigator,
+    Gap,
+    IDCard,
+    ProgressBar,
+    ShorcutItem,
+    HistoryTransaction,
+    CardPeople,
+    CardBlog,
+    ScreenIndicator,
+};

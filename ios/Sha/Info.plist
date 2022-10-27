@@ -39,6 +39,10 @@
 	<string/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Bank Sha ingin mengakses foto</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Bank Sha ingin mengakses kamera anda</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
