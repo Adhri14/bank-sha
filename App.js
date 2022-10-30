@@ -22,13 +22,15 @@ import {
 } from './src/storage';
 import StaticColor from './src/utils/Colors';
 import { isIphoneNotch } from './src/utils/Constants';
+import RNBootSplash from 'react-native-bootsplash';
 
 const MainApp = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         getDataFromLocalStorge(SETTING_APP).then(res => {
+            console.log('local : ', res);
             // removeDataFromLocalStorage(['userProfile']);
-            if (res || res === null) {
+            if (res === true || res === null) {
                 dispatch({ type: SET_SETTING_APP, value: true });
             } else {
                 dispatch({ type: SET_SETTING_APP, value: false });
@@ -37,7 +39,7 @@ const MainApp = () => {
     }, []);
     return (
         <View style={{ flex: 1, backgroundColor: StaticColor.backgroundColor }}>
-            <NavigationContainer>
+            <NavigationContainer onReady={() => RNBootSplash.hide()}>
                 <StatusBar barStyle="dark-content" />
                 {/* <SafeAreaView style={{backgroundColor: StaticColor.backgroundColor}} /> */}
                 <AppNavigator />

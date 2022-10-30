@@ -1,92 +1,121 @@
-import { StyleSheet, View } from 'react-native';
-import React from 'react';
+import { Dimensions, FlatList, StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { Gap, HistoryTransaction, Scaffold, Text } from '../../components';
 import StaticColor from '../../utils/Colors';
 import { Container } from '../../styled';
 import { IcTCat1, IcTCat2, IcTCat3, IcTCat4, IcTCat5 } from '../../assets';
 import Icon from '../../components/Icon';
+import { useSelector } from 'react-redux';
+import FormatMoney from '../../utils/FormatMoney';
+import { getDataFromLocalStorge } from '../../storage';
+import axios from 'axios';
+import { API_URL } from '../../services/config';
+import { Component } from 'react';
 
-const History = () => {
-    return (
-        <Scaffold
-            showHeader
-            headerTitle="History"
-            useSafeArea
-            statusBarColor={StaticColor.backgroundColor}
-            scrollEnabled
-            contentContainerStyle={{ paddingBottom: 30 }}
-            isLeftButton={false}
-            iconRightButton={<Icon />}
-        >
-            <Container flex={1} marginHorizontal={24}>
-                <Gap height={30} />
-                <Text size={16} type="semibold" align="left">
-                    Today
-                </Text>
-                <Gap height={14} />
-                <View
-                    style={[
-                        styles.content,
-                        {
-                            backgroundColor: 'white',
-                            borderRadius: 20,
-                            padding: 22,
-                            paddingTop: 4,
-                        },
-                    ]}
-                >
-                    <HistoryTransaction
-                        icon={IcTCat1}
-                        type="Top Up"
-                        time="Yesterday"
-                        value="+ 450.000"
+const { height } = Dimensions.get('screen');
+class History extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            data: [],
+            currentPage: 0,
+            page: 1,
+        };
+    }
+
+    componentDidMount() {
+        this.getHistoryTransaction();
+    }
+
+    getHistoryTransaction = () => {
+        getDataFromLocalStorge('userProfile').then(token => {
+            axios
+                .get(`${API_URL}/transactions?page=${this.state.page}`, {
+                    headers: { Authorization: `Bearer ${token.token}` },
+                })
+                .then(res => {
+                    console.log(res.data);
+                    console.log(res.data.current_page);
+                    // setCurrentPage(res.data.last_page);
+                    this.setState({
+                        data:
+                            this.state.page === 1
+                                ? res.data.data
+                                : [...this.state.data, ...res.data.data],
+                        currentPage: res.data.last_page,
+                    });
+                })
+                .catch(err => {
+                    console.log(err.response);
+                });
+        });
+    };
+
+    loadMore = () => {
+        this.setState(
+            {
+                page: this.state.page + 1,
+            },
+            () => {
+                this.getHistoryTransaction();
+            },
+        );
+    };
+
+    render() {
+        return (
+            <Scaffold
+                showHeader
+                headerTitle="History"
+                useSafeArea
+                statusBarColor={StaticColor.backgroundColor}
+                // scrollEnabled
+                contentContainerStyle={{
+                    flexGrow: 0,
+                }}
+                isLeftButton={false}
+                iconRightButton={<Icon />}
+            >
+                <Container marginHorizontal={24} height={height}>
+                    <FlatList
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={{ paddingBottom: 240 }}
+                        data={this.state.data}
+                        renderItem={({ item }) => (
+                            <HistoryTransaction
+                                icon={
+                                    item.transaction_type.code === 'top_up'
+                                        ? IcTCat1
+                                        : item.transaction_type.code ===
+                                          'internet'
+                                        ? IcTCat4
+                                        : IcTCat5
+                                }
+                                type={
+                                    item.transaction_type.code === 'top_up'
+                                        ? 'Top Up'
+                                        : item.transaction_type.code ===
+                                          'internet'
+                                        ? 'Electric'
+                                        : 'Transfer'
+                                }
+                                time={item.transaction_code}
+                                value={FormatMoney.getFormattedMoney(
+                                    item.amount,
+                                    item.transaction_type.code !== 'top_up'
+                                        ? '-'
+                                        : '+',
+                                )}
+                            />
+                        )}
+                        onEndReached={this.loadMore}
                     />
-                    <HistoryTransaction
-                        icon={IcTCat2}
-                        type="Cashback"
-                        time="Sep 11"
-                        value="+ 22.000"
-                    />
-                    <HistoryTransaction
-                        icon={IcTCat3}
-                        type="Withdraw"
-                        time="Sep 2"
-                        value="- 5.000"
-                    />
-                </View>
-                <Gap height={40} />
-                <Text size={16} type="semibold" align="left">
-                    Tue 12 Dec
-                </Text>
-                <Gap height={14} />
-                <View
-                    style={[
-                        styles.content,
-                        {
-                            backgroundColor: 'white',
-                            borderRadius: 20,
-                            padding: 22,
-                            paddingTop: 4,
-                        },
-                    ]}
-                >
-                    <HistoryTransaction
-                        icon={IcTCat4}
-                        type="Transfer"
-                        time="Aug 11"
-                        value="- 123.500"
-                    />
-                    <HistoryTransaction
-                        icon={IcTCat5}
-                        type="Electric"
-                        time="Feb 11"
-                        value="- 12.300.000"
-                    />
-                </View>
-            </Container>
-        </Scaffold>
-    );
-};
+                </Container>
+            </Scaffold>
+        );
+    }
+}
 
 export default History;
 

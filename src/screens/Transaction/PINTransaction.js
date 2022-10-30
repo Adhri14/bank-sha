@@ -1,19 +1,29 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import {
     Alert,
+    Linking,
     StyleSheet,
     TouchableOpacity,
     Vibration,
     View,
 } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import { useDispatch } from 'react-redux';
 import { Button, Scaffold, Text, ToastMessage } from '../../components';
+import {
+    paketDataAction,
+    topUpAction,
+    transferAction,
+} from '../../reducer/actions/topup';
+import { API_URL } from '../../services/config';
 import { getDataFromLocalStorge } from '../../storage';
 import StaticColor from '../../utils/Colors';
 
-const PIN = ({ navigation, route }) => {
-    const { nameScreen } = route.params;
+const PINTransaction = ({ navigation, route }) => {
+    const { data } = route.params;
     const [pin, setPin] = useState('');
+    const dispatch = useDispatch();
 
     const numpad = [
         { id: '1' },
@@ -28,11 +38,12 @@ const PIN = ({ navigation, route }) => {
     ];
 
     useEffect(() => {
+        console.log('lempar : ', data);
         getDataFromLocalStorge('userProfile').then(res => {
+            console.log('data : ', res);
             const myPin = res?.pin;
             if (pin.length === 6) {
                 if (pin !== myPin) {
-                    setPin('');
                     Vibration.vibrate(1000);
                     ToastMessage.show({
                         message:
@@ -41,22 +52,30 @@ const PIN = ({ navigation, route }) => {
                         type: 'error',
                     });
                 } else {
-                    ToastMessage.show({
-                        message: 'PIN anda sesuai',
-                        backgroundColor: StaticColor.primaryColor,
-                    });
-                    if (nameScreen === 'sign-in') {
-                        navigation.replace('MainApp');
-                    } else if (nameScreen === 'top-up') {
-                        navigation.replace('TopUpSuccess');
-                    } else if (nameScreen === 'paket-data') {
-                        navigation.replace('MainApp');
-                    } else if (nameScreen === 'edit-profile') {
-                        navigation.replace('EditProfileUser');
-                    } else if (nameScreen === 'edit-pin') {
-                        navigation.replace('EditPinUser');
-                    } else {
-                        navigation.navigate('MainApp');
+                    if (data.nameScreen === 'top_up') {
+                        const sendData = {
+                            ...data,
+                            pin,
+                            amount: data.amount,
+                            payment_method_code: data.code,
+                        };
+                        dispatch(topUpAction(navigation, sendData));
+                    } else if (data.nameScreen === 'paket_data') {
+                        const sendData = {
+                            ...data,
+                            pin,
+                            phone_number: data.phone_number,
+                            data_plan_id: data.data_plan_id,
+                        };
+                        dispatch(paketDataAction(navigation, sendData));
+                    } else if (data.nameScreen === 'transfer') {
+                        const sendData = {
+                            ...data,
+                            pin,
+                            amount: data.amount,
+                            send_to: data.code,
+                        };
+                        dispatch(transferAction(navigation, sendData));
                     }
                 }
             }
@@ -167,7 +186,7 @@ const PIN = ({ navigation, route }) => {
     );
 };
 
-export default PIN;
+export default PINTransaction;
 
 const styles = StyleSheet.create({
     page: {

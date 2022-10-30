@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     IlWallet,
     LogoBankBCA,
@@ -9,6 +10,7 @@ import {
     LogoBankOCBC,
 } from '../../assets';
 import { Button, Gap, Scaffold, Text } from '../../components';
+import { bankAction } from '../../reducer/actions/bank';
 import { Column, Container, Row } from '../../styled';
 import StaticColor from '../../utils/Colors';
 
@@ -48,7 +50,12 @@ const TAB_BANK = [
 ];
 
 const TopUp = ({ navigation }) => {
+    const { user, bank } = useSelector(state => state);
+    const dispatch = useDispatch();
     const [currentIndex, setCurrentIndex] = useState(null);
+    useEffect(() => {
+        dispatch(bankAction());
+    }, []);
     return (
         <Scaffold
             showHeader
@@ -68,7 +75,7 @@ const TopUp = ({ navigation }) => {
                     <Image source={IlWallet} style={styles.wallet} />
                     <View style={{ flex: 1 }}>
                         <Text align="left" size={16} type="medium">
-                            0000 0000 0000 0000
+                            {user.user?.card_number.replace(/.{4}/g, '$& ')}
                         </Text>
                         <Gap height={5} />
                         <Text
@@ -77,7 +84,7 @@ const TopUp = ({ navigation }) => {
                             type="regular"
                             color={StaticColor.subtitleColor}
                         >
-                            Adhri
+                            {user.user?.username}
                         </Text>
                     </View>
                 </Row>
@@ -87,26 +94,27 @@ const TopUp = ({ navigation }) => {
                 </Text>
                 <Gap height={10} />
                 <Column>
-                    {TAB_BANK.map((item, index) => (
+                    {bank.data.map((item, index) => (
                         <Pressable
-                            key={item.id.toString()}
+                            key={item.code}
                             style={[
                                 styles.select,
                                 {
                                     borderColor:
-                                        currentIndex === index
+                                        currentIndex === item.code
                                             ? StaticColor.secondaryColor
                                             : 'white',
                                 },
                             ]}
-                            onPress={() => setCurrentIndex(index)}
+                            onPress={() => setCurrentIndex(item.code)}
                         >
                             <Row justify="space-between">
                                 <Image
-                                    source={item.img}
+                                    source={{ uri: item.thumbnail }}
                                     style={{
-                                        width: item.width,
-                                        height: item.height,
+                                        width: 85,
+                                        height: 30,
+                                        resizeMode: 'contain',
                                     }}
                                 />
                                 <View>
@@ -129,7 +137,12 @@ const TopUp = ({ navigation }) => {
                     <Gap height={12} />
                     {currentIndex !== null && (
                         <Button
-                            onPress={() => navigation.navigate('TopUpAmount')}
+                            onPress={() =>
+                                navigation.navigate('TopUpAmount', {
+                                    code: currentIndex,
+                                    nameScreen: 'top_up',
+                                })
+                            }
                         >
                             Continue
                         </Button>

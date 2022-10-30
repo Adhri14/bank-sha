@@ -70,47 +70,39 @@ const IntroductionApp = ({ navigation }) => {
 
     useEffect(() => {
         setIsLoading(true);
+        console.log(setting);
         if (!setting.app) {
             console.log('testing ini');
             getDataFromLocalStorge('userProfile').then(res => {
-                setIsLoading(false);
-                console.log('masuk sini');
-                if (res?.token) {
-                    console.log('ada token');
-                    // redirectTo('MainApp');
-                    axios
-                        .get(`${API_URL}/users`, {
-                            headers: { Authorization: `Bearer ${res?.token}` },
-                        })
-                        .then(result => {
-                            console.log('hasil : ', result.data);
-                            setIsLoading(false);
-                            dispatch({
-                                type: SET_USER,
-                                value: { user: result.data },
-                            });
-                            redirectTo('MainApp');
-                        })
-                        .catch(errr => {
-                            setIsLoading(false);
-                            console.log('error nya : ', errr.response);
-                            if (errr.response.status === 401) {
-                                ToastMessage.show({
-                                    message: errr.response.data?.message,
-                                    type: 'danger',
-                                    backgroundColor: StaticColor.errorColor,
-                                });
-                                removeDataFromLocalStorage(['userProfile']);
-                                redirectTo('SignIn');
-                            }
+                axios
+                    .get(`${API_URL}/users`, {
+                        headers: { Authorization: `Bearer ${res?.token}` },
+                    })
+                    .then(result => {
+                        console.log('hasil : ', result.data);
+                        setIsLoading(false);
+                        dispatch({
+                            type: SET_USER,
+                            value: { user: result.data },
                         });
-                } else {
-                    console.log('tidak ada token');
-                    redirectTo('SignIn');
-                    setIsLoading(false);
-                }
+                        redirectTo('MainApp');
+                    })
+                    .catch(errr => {
+                        setIsLoading(false);
+                        console.log('error nya : ', errr.response);
+                        if (errr.response.status === 401) {
+                            ToastMessage.show({
+                                message: errr.response.data?.message,
+                                type: 'danger',
+                                backgroundColor: StaticColor.errorColor,
+                            });
+                            removeDataFromLocalStorage(['userProfile']);
+                            redirectTo('SignIn');
+                        }
+                    });
             });
         } else {
+            console.log('masuk sini');
             setIsLoading(false);
         }
     }, [setting]);
@@ -124,8 +116,6 @@ const IntroductionApp = ({ navigation }) => {
     const goToNext = index => {
         if (flatListRef.current) {
             if (index === 2) {
-                console.log('index : ', index);
-                // setActiveIndex(2)
                 flatListRef.current.scrollToIndex({ animated: true, index });
             } else {
                 flatListRef.current.scrollToIndex({ animated: true, index });
@@ -139,12 +129,13 @@ const IntroductionApp = ({ navigation }) => {
             routes: [
                 {
                     name: nav,
+                    merge: true,
                 },
             ],
         });
     };
 
-    if (isLoading && setting.app) return <ScreenIndicator />;
+    if (!setting.app) return <ScreenIndicator />;
 
     return (
         <Scaffold
@@ -262,9 +253,12 @@ const IntroductionApp = ({ navigation }) => {
                     ) : (
                         <Button
                             onPress={() => {
-                                redirectTo('SignUp');
                                 saveToLocalStorage(SETTING_APP, false);
-                                dispatch(settingAction());
+                                dispatch({
+                                    type: SET_SETTING_APP,
+                                    value: false,
+                                });
+                                redirectTo('SignUp');
                             }}
                             style={{
                                 width: activeIndex !== 2 ? 150 : '100%',
@@ -308,7 +302,10 @@ const IntroductionApp = ({ navigation }) => {
                                 // navigation.replace('SignIn');
                                 redirectTo('SignIn');
                                 saveToLocalStorage(SETTING_APP, false);
-                                dispatch(settingAction());
+                                dispatch({
+                                    type: SET_SETTING_APP,
+                                    value: false,
+                                });
                             }
                         }}
                         color={

@@ -4,6 +4,7 @@ import StaticColor from '../../utils/Colors';
 import {
     Button,
     Scaffold,
+    ScreenIndicator,
     Text,
     TextInput,
     ToastMessage,
@@ -12,20 +13,28 @@ import { LogoLight } from '../../assets';
 import { useCallback } from 'react';
 import { loginService } from '../../reducer/actions/auth';
 import { saveToLocalStorage } from '../../storage';
+import { userService } from '../../reducer/actions/user';
+import axios from 'axios';
+import { API_URL } from '../../services/config';
+import { useDispatch } from 'react-redux';
+import { SET_USER } from '../../reducer/key';
 
 const SignIn = ({ navigation }) => {
     const inputRefPassword = useRef(null);
+    const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(false);
     const [form, setForm] = useState({
         email: '',
         password: '',
     });
 
     const onSubmit = useCallback(() => {
+        setIsLoading(true);
         console.log('form : ', form);
         loginService(form)
             .then(res => {
-                console.log('res : ', res);
                 if (res?.status === 400) {
+                    setIsLoading(false);
                     ToastMessage.show({
                         message: `${JSON.stringify(res?.data?.errors)}`,
                         type: 'danger',
@@ -36,22 +45,45 @@ const SignIn = ({ navigation }) => {
                         token: res.token,
                         pin: res.pin,
                     };
+                    axios
+                        .get(`${API_URL}/users`, {
+                            headers: { Authorization: `Bearer ${data.token}` },
+                        })
+                        .then(result => {
+                            console.log(result.data);
+                            setIsLoading(false);
+                            dispatch({
+                                type: SET_USER,
+                                value: { user: result.data },
+                            });
+                            // redirectTo('MainApp');
+                            redirectTo('PIN');
+                        })
+                        .catch(errr => {
+                            setIsLoading(false);
+                            console.log('error nya : ', errr.response);
+                        });
                     saveToLocalStorage('userProfile', data);
-                    redirectTo('PIN');
                 }
             })
             .catch(err => {
+                setIsLoading(false);
                 ToastMessage.show({
                     message: err.message,
                     type: 'danger',
                     backgroundColor: StaticColor.errorColor,
                 });
             });
-    }, [form]);
+    }, [form, setIsLoading]);
 
     const redirectTo = nav => {
-        navigation.replace(nav, { nameScreen: 'sign-in' });
+        navigation.reset({
+            index: 0,
+            routes: [{ name: nav, params: { nameScreen: 'sign-in' } }],
+        });
     };
+
+    if (isLoading) return <ScreenIndicator />;
 
     return (
         <Scaffold

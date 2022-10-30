@@ -12,6 +12,9 @@ export const userReducer = (state = initUser, action) => {
                 user: action.value.user,
             };
 
+        case 'RESET_USER':
+            return initUser;
+
         default:
             return state;
     }

@@ -26,3 +26,16 @@ export const loginService = async (body, headers) => {
         return error.response;
     }
 };
+
+export const logoutService = async token => {
+    try {
+        const res = await axios.post(
+            `${API_URL}/logout`,
+            {},
+            { headers: { Authorization: `Bearer ${token}` } },
+        );
+        return res.data;
+    } catch (error) {
+        return error.response;
+    }
+};

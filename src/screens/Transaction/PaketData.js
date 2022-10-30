@@ -11,6 +11,7 @@ import {
 import { Button, Gap, Scaffold, Text, TextInput } from '../../components';
 import { Column, Container, Row } from '../../styled';
 import StaticColor from '../../utils/Colors';
+import FormatMoney from '../../utils/FormatMoney';
 
 const TAB_BANK = [
     {
@@ -35,8 +36,20 @@ const TAB_BANK = [
     },
 ];
 
-const PaketData = ({ navigation }) => {
+const PaketData = ({ navigation, route }) => {
+    const { dataProvider } = route.params;
     const [currentIndex, setCurrentIndex] = useState(null);
+    const [phoneNumber, setPhoneNumber] = useState('');
+
+    const onSubmit = () => {
+        const data = {
+            nameScreen: 'paket_data',
+            data_plan_id: currentIndex,
+            phone_number: phoneNumber,
+        };
+        navigation.navigate('PINTransaction', { data });
+    };
+
     return (
         <Scaffold
             showHeader
@@ -54,8 +67,10 @@ const PaketData = ({ navigation }) => {
                 <Gap height={10} />
                 <TextInput
                     styleInput={{ backgroundColor: 'white' }}
-                    placeholder="+628"
+                    placeholder="08112XXXXX"
                     keyboardType="number-pad"
+                    value={phoneNumber}
+                    onChangeText={val => setPhoneNumber(val)}
                 />
                 <Gap height={40} />
                 <Text align="left" size={16} type="semibold">
@@ -63,19 +78,19 @@ const PaketData = ({ navigation }) => {
                 </Text>
                 <Gap height={10} />
                 <Row justify="space-between" style={{ flexWrap: 'wrap' }}>
-                    {TAB_BANK.map((item, index) => (
+                    {dataProvider.data.map((item, index) => (
                         <Pressable
                             key={item.id.toString()}
                             style={[
                                 styles.select,
                                 {
                                     borderColor:
-                                        currentIndex === index
+                                        currentIndex === item.id
                                             ? StaticColor.secondaryColor
                                             : 'white',
                                 },
                             ]}
-                            onPress={() => setCurrentIndex(index)}
+                            onPress={() => setCurrentIndex(item.id)}
                         >
                             <Text size={32} type="medium">
                                 {item.name}
@@ -86,23 +101,17 @@ const PaketData = ({ navigation }) => {
                                 type="regular"
                                 color={StaticColor.subtitleColor}
                             >
-                                Rp. {item.price}
+                                {FormatMoney.getFormattedMoney(item.price)}
                             </Text>
                         </Pressable>
                     ))}
                 </Row>
                 <Gap flex={1} />
-                {currentIndex !== null && (
-                    <Button
-                        onPress={() =>
-                            navigation.navigate('PIN', {
-                                nameScreen: 'paket-data',
-                            })
-                        }
-                    >
-                        Continue
-                    </Button>
-                )}
+                {currentIndex !== null &&
+                phoneNumber !== '' &&
+                phoneNumber.length >= 10 ? (
+                    <Button onPress={onSubmit}>Continue</Button>
+                ) : null}
             </Container>
         </Scaffold>
     );

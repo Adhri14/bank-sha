@@ -2,16 +2,22 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import {
     BuyPulsa,
+    EditPinUser,
+    EditProfileUser,
     IntroductionApp,
     PaketData,
     PIN,
+    PINTransaction,
+    ProfileUser,
     SignIn,
     SignUp,
     SignUpIDCard,
     SignUpProfile,
+    SuccessUpdate,
     TopUp,
     TopUpAmount,
     TopUpSuccess,
+    Transfer,
 } from '../../screens';
 import BottomNavigator from '../BottomNavigator';
 
@@ -39,6 +45,14 @@ export default function AppNavigator() {
             <Screen name="TopUpSuccess" component={TopUpSuccess} />
             <Screen name="BuyPulsa" component={BuyPulsa} />
             <Screen name="PaketData" component={PaketData} />
+            <Screen name="Transfer" component={Transfer} />
+            <Screen name="PINTransaction" component={PINTransaction} />
+
+            {/* User */}
+            <Screen name="ProfileUser" component={ProfileUser} />
+            <Screen name="EditProfileUser" component={EditProfileUser} />
+            <Screen name="EditPinUser" component={EditPinUser} />
+            <Screen name="SuccessUpdate" component={SuccessUpdate} />
         </Navigator>
     );
 }

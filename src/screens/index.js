@@ -21,8 +21,20 @@ import TopUpAmount from './Transaction/TopUpAmount';
 import TopUpSuccess from './Transaction/TopUpSuccess';
 import BuyPulsa from './Transaction/BuyPulsa';
 import PaketData from './Transaction/PaketData';
+import PINTransaction from './Transaction/PINTransaction';
+
+// User
+import ProfileUser from './User/ProfileUser';
+import EditProfileUser from './User/EditProfileUser';
+import EditPinUser from './User/EditPinUser';
+import SuccessUpdate from './User/SuccessUpdate';
 
 export {
+    PINTransaction,
+    SuccessUpdate,
+    ProfileUser,
+    EditProfileUser,
+    EditPinUser,
     BuyPulsa,
     PaketData,
     IntroductionApp,

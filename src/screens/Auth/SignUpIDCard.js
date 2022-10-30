@@ -4,6 +4,7 @@ import StaticColor from '../../utils/Colors';
 import {
     Button,
     Scaffold,
+    ScreenIndicator,
     Text,
     TextInput,
     ToastMessage,
@@ -13,32 +14,61 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCallback } from 'react';
 import { registerService } from '../../reducer/actions/auth';
-import { CLEAR_REGISTER_REDUCER } from '../../reducer/key';
+import { CLEAR_REGISTER_REDUCER, SET_USER } from '../../reducer/key';
 import { saveToLocalStorage } from '../../storage';
+import { API_URL } from '../../services/config';
+import axios from 'axios';
 
 const SignUpIDCard = ({ navigation }) => {
     const register = useSelector(state => state.register);
     const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(false);
+    console.log('register', register);
 
     const onSubmit = useCallback(async () => {
-        try {
-            const res = await registerService(register);
-            const data = {
-                token: res.token,
-                pin: res.pin,
-            };
-            await saveToLocalStorage('userProfile', data);
-            dispatch({ type: CLEAR_REGISTER_REDUCER });
-            navigation.reset({ index: 0, routes: [{ name: 'MainApp' }] });
-        } catch (error) {
-            console.log('register err : ', error);
-            ToastMessage.show({
-                message: error,
-                type: 'danger',
-                backgroundColor: StaticColor.errorColor,
+        setIsLoading(true);
+        registerService(register)
+            .then(res => {
+                setIsLoading(false);
+                const data = {
+                    token: res.token,
+                    pin: res.pin,
+                };
+
+                saveToLocalStorage('userProfile', data);
+                axios
+                    .get(`${API_URL}/users`, {
+                        headers: { Authorization: `Bearer ${data.token}` },
+                    })
+                    .then(result => {
+                        console.log(result.data);
+                        setIsLoading(false);
+                        dispatch({
+                            type: SET_USER,
+                            value: { user: result.data },
+                        });
+                        // redirectTo('MainApp');
+                        navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'MainApp' }],
+                        });
+                    })
+                    .catch(errr => {
+                        setIsLoading(false);
+                        console.log('error nya : ', errr.response);
+                    });
+                dispatch({ type: CLEAR_REGISTER_REDUCER });
+            })
+            .catch(error => {
+                setIsLoading(false);
+                console.log('register err : ', error);
+                ToastMessage.show({
+                    message: error,
+                    type: 'danger',
+                    backgroundColor: StaticColor.errorColor,
+                });
             });
-        }
-    }, []);
+    }, [register]);
 
     const takePhoto = async () => {
         try {
@@ -58,6 +88,8 @@ const SignUpIDCard = ({ navigation }) => {
             console.log('error : ', error);
         }
     };
+
+    if (isLoading) return <ScreenIndicator />;
 
     return (
         <Scaffold
@@ -86,7 +118,7 @@ const SignUpIDCard = ({ navigation }) => {
                                     <Image
                                         source={
                                             register.ktp !== ''
-                                                ? register.ktp
+                                                ? { uri: register.ktp }
                                                 : IcUpload
                                         }
                                         style={[
@@ -172,5 +204,6 @@ const styles = StyleSheet.create({
         backgroundColor: StaticColor.backgroundColor2,
         borderRadius: 20,
         marginBottom: 10,
+        overflow: 'hidden',
     },
 });

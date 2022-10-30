@@ -4,12 +4,12 @@ import Text from './Text';
 import StaticColor from '../utils/Colors';
 
 const TextInput = forwardRef((props, ref) => {
-    const { label, styleInput, ...inputProps } = props;
+    const { label, styleInput, size, type, ...inputProps } = props;
     const [isFocus, setIsFocus] = useState(false);
 
     return (
         <View style={{ marginBottom: 16 }}>
-            <Text align="left" type="medium">
+            <Text align="left" type={type || 'medium'} size={size}>
                 {label}
             </Text>
             <TextInputRN

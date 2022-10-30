@@ -117,6 +117,29 @@ const Scaffold = ({
                 backgroundColor={statusBarColor || StaticColor.backgroundColor}
                 barStyle={barStyle || 'dark-content'}
             />
+            {translucent && (
+                <View
+                    style={{
+                        height: statusBarHeight,
+                        backgroundColor:
+                            statusBarColor || StaticColor.backgroundColor,
+                    }}
+                />
+            )}
+            {showHeader && header ? (
+                header
+            ) : showHeader ? (
+                <Header
+                    title={headerTitle}
+                    onPressLeftButton={() =>
+                        onPressLeftButton
+                            ? onPressLeftButton()
+                            : navigation.pop()
+                    }
+                    iconRightButton={iconRightButton}
+                    isLeftButton={isLeftButton}
+                />
+            ) : null}
             <ScrollView
                 contentContainerStyle={{
                     flexGrow: 1,
@@ -125,31 +148,6 @@ const Scaffold = ({
                 scrollEnabled={scrollEnabled}
                 showsVerticalScrollIndicator={false}
             >
-                {translucent && (
-                    <View
-                        style={{
-                            height: statusBarHeight,
-                            backgroundColor:
-                                statusBarColor || StaticColor.backgroundColor,
-                        }}
-                    />
-                )}
-
-                {showHeader && header ? (
-                    header
-                ) : showHeader ? (
-                    <Header
-                        title={headerTitle}
-                        onPressLeftButton={() =>
-                            onPressLeftButton
-                                ? onPressLeftButton()
-                                : navigation.pop()
-                        }
-                        iconRightButton={iconRightButton}
-                        isLeftButton={isLeftButton}
-                    />
-                ) : null}
-
                 {fallback ? (
                     <ScreenIndicator transparent />
                 ) : empty && !isLoading ? (

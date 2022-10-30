@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import TabItem from './TabItem';
 
-
 const TabNavigator = ({ state, descriptors, navigation }) => {
     return (
         <View style={styles.container}>
@@ -12,8 +11,8 @@ const TabNavigator = ({ state, descriptors, navigation }) => {
                     options.tabBarLabel !== undefined
                         ? options.tabBarLabel
                         : options.title !== undefined
-                            ? options.title
-                            : route.name;
+                        ? options.title
+                        : route.name;
 
                 const isFocused = state.index === index;
 
@@ -26,7 +25,17 @@ const TabNavigator = ({ state, descriptors, navigation }) => {
 
                     if (!isFocused && !event.defaultPrevented) {
                         // The `merge: true` option makes sure that the params inside the tab screen are preserved
-                        navigation.navigate({ name: route.name, merge: true });
+                        if (route.name === 'Transfers') {
+                            navigation.navigate({
+                                name: 'TopUp',
+                                merge: true,
+                            });
+                        } else {
+                            navigation.navigate({
+                                name: route.name,
+                                merge: true,
+                            });
+                        }
                     }
                 };
 
@@ -38,12 +47,18 @@ const TabNavigator = ({ state, descriptors, navigation }) => {
                 };
 
                 return (
-                    <TabItem key={index} onPress={onPress} onLongPress={onLongPress} isFocused={isFocused} label={label} />
+                    <TabItem
+                        key={index}
+                        onPress={onPress}
+                        onLongPress={onLongPress}
+                        isFocused={isFocused}
+                        label={label}
+                    />
                 );
             })}
         </View>
-    )
-}
+    );
+};
 
 export default TabNavigator;
 
@@ -56,4 +71,4 @@ const styles = StyleSheet.create({
         paddingVertical: 13,
         backgroundColor: 'white',
     },
-})
+});

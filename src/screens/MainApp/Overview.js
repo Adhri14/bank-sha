@@ -43,6 +43,11 @@ import {
     IcWater,
     IcWithdraw,
 } from '../../assets';
+import { useDispatch, useSelector } from 'react-redux';
+import { transactionAction } from '../../reducer/actions/transaction';
+import { tipsAction } from '../../reducer/actions/tips';
+import FormatMoney from '../../utils/FormatMoney';
+import { useCallback } from 'react';
 
 const ModalMore = ({ visible, onRequestClose, onPress, children }) => {
     const animBackDrop = useRef(new Animated.Value(0)).current;
@@ -89,19 +94,48 @@ const ModalMore = ({ visible, onRequestClose, onPress, children }) => {
 };
 
 const Overview = ({ navigation }) => {
+    const { user } = useSelector(state => state.user);
+    const { data } = useSelector(state => state.transactions);
+    const { tips } = useSelector(state => state.tips);
+    const dispatch = useDispatch();
     const [visible, setVisible] = useState(false);
     const [xp, setXp] = useState(0);
+    const [total, setTotal] = useState(0);
 
     useEffect(() => {
         setXp(5.5);
+        dispatch(transactionAction());
+        dispatch(tipsAction());
+        reduceTopUp();
     }, []);
+
+    const findTopUp = data.find(
+        item => item.transaction_type.code === 'top_up',
+    );
+    const findInternet = data.find(
+        item => item.transaction_type.code === 'internet',
+    );
+    const findTransfer = data.find(
+        item => item.transaction_type.code === 'transfer',
+    );
+
+    const reduceTopUp = check => {
+        console.log('find : ', findTopUp);
+    };
 
     return (
         <Scaffold
             useSafeArea
             statusBarColor={StaticColor.backgroundColor}
             showHeader
-            header={<HeaderHome />}
+            header={
+                <HeaderHome
+                    name={user?.name}
+                    img={{ uri: user.profile_picture }}
+                    onPress={() => navigation.navigate('ProfileUser')}
+                    isVerified={user?.verified}
+                />
+            }
             scrollEnabled
             contentContainerStyle={{ paddingBottom: 30 }}
         >
@@ -114,7 +148,10 @@ const Overview = ({ navigation }) => {
                     <ShorcutItem
                         title="Data"
                         icon={IcData}
-                        onPress={() => navigation.navigate('BuyPulsa')}
+                        onPress={() => {
+                            setVisible(!visible);
+                            navigation.navigate('BuyPulsa');
+                        }}
                     />
                     <ShorcutItem title="Water" icon={IcWater} />
                     <ShorcutItem title="Stream" icon={IcStream} />
@@ -127,13 +164,20 @@ const Overview = ({ navigation }) => {
                 </Row>
             </ModalMore>
             <Container flex={1} marginHorizontal={24}>
-                <IDCard />
+                <IDCard
+                    cardNumber={user?.card_number.slice(12)}
+                    balance={user?.balance}
+                    username={user?.username}
+                />
                 <Gap height={20} />
                 <View style={styles.card}>
                     <View style={styles.cardRow}>
                         <Text>Level 1</Text>
                         <Text type="semibold" color="#22B07D">
-                            55% of <Text type="semibold">Rp 20.000</Text>
+                            55% of{' '}
+                            <Text type="semibold">
+                                {FormatMoney.getFormattedMoney(20000, 'Rp')}
+                            </Text>
                         </Text>
                     </View>
                     <ProgressBar step={xp} steps={10} />
@@ -149,7 +193,11 @@ const Overview = ({ navigation }) => {
                         icon={IcTopUp}
                         onPress={() => navigation.navigate('TopUp')}
                     />
-                    <ShorcutItem title="Send" icon={IcSend} />
+                    <ShorcutItem
+                        title="Send"
+                        icon={IcSend}
+                        onPress={() => navigation.navigate('Transfer')}
+                    />
                     <ShorcutItem title="Withdraw" icon={IcWithdraw} />
                     <ShorcutItem
                         onPress={() => setVisible(true)}
@@ -157,53 +205,60 @@ const Overview = ({ navigation }) => {
                         icon={IcMore}
                     />
                 </Row>
-                <Gap height={30} />
-                <Text size={16} type="semibold" align="left">
-                    Latest Transactions
-                </Text>
-                <Gap height={14} />
-                <View
-                    style={[
-                        styles.content,
-                        {
-                            backgroundColor: 'white',
-                            borderRadius: 20,
-                            padding: 22,
-                            paddingTop: 4,
-                        },
-                    ]}
-                >
-                    <HistoryTransaction
-                        icon={IcTCat1}
-                        type="Top Up"
-                        time="Yesterday"
-                        value="+ 450.000"
-                    />
-                    <HistoryTransaction
-                        icon={IcTCat2}
-                        type="Cashback"
-                        time="Sep 11"
-                        value="+ 22.000"
-                    />
-                    <HistoryTransaction
-                        icon={IcTCat3}
-                        type="Withdraw"
-                        time="Sep 2"
-                        value="- 5.000"
-                    />
-                    <HistoryTransaction
-                        icon={IcTCat4}
-                        type="Transfer"
-                        time="Aug 11"
-                        value="- 123.500"
-                    />
-                    <HistoryTransaction
-                        icon={IcTCat5}
-                        type="Electric"
-                        time="Feb 11"
-                        value="- 12.300.000"
-                    />
-                </View>
+                {data.length > 0 && (
+                    <>
+                        <Gap height={30} />
+                        <Text size={16} type="semibold" align="left">
+                            Latest Transactions
+                        </Text>
+                        <Gap height={14} />
+                        <View
+                            style={[
+                                styles.content,
+                                {
+                                    backgroundColor: 'white',
+                                    borderRadius: 20,
+                                    padding: 22,
+                                    paddingTop: 4,
+                                },
+                            ]}
+                        >
+                            {findTopUp && (
+                                <HistoryTransaction
+                                    icon={IcTCat1}
+                                    type="Top Up"
+                                    time="Today"
+                                    value={FormatMoney.getFormattedMoney(
+                                        findTopUp?.amount,
+                                        '+',
+                                    )}
+                                />
+                            )}
+                            {findTransfer && (
+                                <HistoryTransaction
+                                    icon={IcTCat4}
+                                    type="Send"
+                                    time="Today"
+                                    value={FormatMoney.getFormattedMoney(
+                                        findTransfer?.amount,
+                                        '-',
+                                    )}
+                                />
+                            )}
+                            {findInternet && (
+                                <HistoryTransaction
+                                    icon={IcTCat5}
+                                    type="Electric"
+                                    time="Today"
+                                    value={FormatMoney.getFormattedMoney(
+                                        findInternet?.amount,
+                                        '-',
+                                    )}
+                                />
+                            )}
+                        </View>
+                    </>
+                )}
                 <Gap height={30} />
                 <Text size={16} type="semibold" align="left">
                     Send Again
@@ -222,30 +277,28 @@ const Overview = ({ navigation }) => {
                     <CardPeople name="@yuanita" image={DmPerson1} />
                     <CardPeople name="@yuanita" image={DmPerson1} />
                 </ScrollView>
-                <Gap height={26} />
-                <Text size={16} type="semibold" align="left">
-                    Friendly Tips
-                </Text>
-                <Container marginTop={14}>
-                    <Row style={{ flexWrap: 'wrap' }} justify="space-between">
-                        <CardBlog
-                            title="Best tips for using a credit card"
-                            image={DmTips1}
-                        />
-                        <CardBlog
-                            title="Spot the good pie of finance model"
-                            image={DmTips2}
-                        />
-                        <CardBlog
-                            title="Great hack to get better advices"
-                            image={DmTips3}
-                        />
-                        <CardBlog
-                            title="Save more penny buy this instead"
-                            image={DmTips4}
-                        />
-                    </Row>
-                </Container>
+                {tips.length > 0 && (
+                    <>
+                        <Gap height={26} />
+                        <Text size={16} type="semibold" align="left">
+                            Friendly Tips
+                        </Text>
+                        <Container marginTop={14}>
+                            <Row
+                                style={{ flexWrap: 'wrap' }}
+                                justify="space-between"
+                            >
+                                {tips.map((item, index) => (
+                                    <CardBlog
+                                        key={index.toString()}
+                                        title="Best tips for using a credit card"
+                                        image={DmTips1}
+                                    />
+                                ))}
+                            </Row>
+                        </Container>
+                    </>
+                )}
             </Container>
         </Scaffold>
     );

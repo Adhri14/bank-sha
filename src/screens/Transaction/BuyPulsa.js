@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     IlWallet,
     LogoBankBCA,
@@ -12,8 +14,11 @@ import {
     LogoTelkomsel,
 } from '../../assets';
 import { Button, Gap, Scaffold, Text } from '../../components';
+import { providerAction } from '../../reducer/actions/provider';
+import { providerReducer } from '../../reducer/reducers/provider';
 import { Column, Container, Row } from '../../styled';
 import StaticColor from '../../utils/Colors';
+import FormatMoney from '../../utils/FormatMoney';
 
 const TAB_PROVIDER = [
     {
@@ -40,7 +45,27 @@ const TAB_PROVIDER = [
 ];
 
 const BuyPulsa = ({ navigation }) => {
-    const [currentIndex, setCurrentIndex] = useState(null);
+    const { user } = useSelector(state => state.user);
+    const dispatch = useDispatch();
+    const { providers } = useSelector(state => state.providers);
+    // const [currentIndex, setCurrentIndex] = useState(null);
+    const [dataProvider, setDataProvider] = useState({
+        id: null,
+        data: [],
+    });
+
+    useEffect(() => {
+        dispatch(providerAction());
+    }, []);
+
+    const onSave = item => {
+        setDataProvider({
+            ...dataProvider,
+            id: item.id,
+            data: item.data_plans,
+        });
+    };
+
     return (
         <Scaffold
             showHeader
@@ -60,7 +85,7 @@ const BuyPulsa = ({ navigation }) => {
                     <Image source={IlWallet} style={styles.wallet} />
                     <View style={{ flex: 1 }}>
                         <Text align="left" size={16} type="medium">
-                            0000 0000 0000 0000
+                            {user?.card_number.replace(/.{4}/g, '$& ')}
                         </Text>
                         <Gap height={5} />
                         <Text
@@ -69,7 +94,8 @@ const BuyPulsa = ({ navigation }) => {
                             type="regular"
                             color={StaticColor.subtitleColor}
                         >
-                            Balance: Rp. 1.000.000
+                            Balance:{' '}
+                            {FormatMoney.getFormattedMoney(user?.balance)}
                         </Text>
                     </View>
                 </Row>
@@ -78,26 +104,32 @@ const BuyPulsa = ({ navigation }) => {
                     Select Bank
                 </Text>
                 <Gap height={10} />
-                {TAB_PROVIDER.map((item, index) => (
+                {providers.map(item => (
                     <Pressable
                         key={item.id.toString()}
                         style={[
                             styles.select,
                             {
                                 borderColor:
-                                    currentIndex === index
+                                    dataProvider.id === item.id
                                         ? StaticColor.secondaryColor
                                         : 'white',
                             },
                         ]}
-                        onPress={() => setCurrentIndex(index)}
+                        onPress={() => onSave(item)}
                     >
                         <Row justify="space-between">
                             <Image
-                                source={item.img}
+                                source={{ uri: item.thumbnail }}
                                 style={{
-                                    width: item.width,
-                                    height: item.height,
+                                    width: 85,
+                                    // item.name === 'Telkomsel'
+                                    //     ? 96
+                                    //     : item.name === 'Indosat'
+                                    //     ? 56
+                                    //     : 55,
+                                    height: 30,
+                                    resizeMode: 'contain',
                                 }}
                             />
                             <View>
@@ -118,8 +150,12 @@ const BuyPulsa = ({ navigation }) => {
                     </Pressable>
                 ))}
                 <Gap flex={1} />
-                {currentIndex !== null && (
-                    <Button onPress={() => navigation.navigate('PaketData')}>
+                {dataProvider.id !== null && (
+                    <Button
+                        onPress={() =>
+                            navigation.navigate('PaketData', { dataProvider })
+                        }
+                    >
                         Continue
                     </Button>
                 )}

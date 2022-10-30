@@ -11,7 +11,8 @@ import { Button, Gap, Scaffold, Text, ToastMessage } from '../../components';
 import { Row } from '../../styled';
 import StaticColor from '../../utils/Colors';
 
-const TopUpAmount = ({ navigation }) => {
+const TopUpAmount = ({ navigation, route }) => {
+    const { code, nameScreen } = route.params;
     const [amount, setAmount] = useState('');
 
     const numpad = [
@@ -37,6 +38,15 @@ const TopUpAmount = ({ navigation }) => {
     };
 
     let amountToStr = amount.split('');
+
+    const onSubmit = () => {
+        const data = {
+            nameScreen,
+            amount: Number(amount),
+            code,
+        };
+        navigation.navigate('PINTransaction', { data: data });
+    };
 
     return (
         <Scaffold
@@ -133,13 +143,7 @@ const TopUpAmount = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
                 <Gap height={40} />
-                <Button
-                    onPress={() =>
-                        navigation.navigate('PIN', { nameScreen: 'top-up' })
-                    }
-                >
-                    Checkout Now
-                </Button>
+                <Button onPress={onSubmit}>Checkout Now</Button>
                 <Gap height={20} />
                 <Text
                     size={16}

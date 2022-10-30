@@ -7,12 +7,19 @@ const { Navigator, Screen } = createBottomTabNavigator();
 
 export default function BottomNavigator() {
     return (
-        <Navigator screenOptions={{ header: () => null }} tabBar={props => <TabNavigator {...props} />}>
-            <Screen name='Overview' component={Overview} />
-            <Screen name='History' component={History} />
-            <Screen name='Transfer' component={Transfer} />
-            <Screen name='Statistic' component={Statistic} />
-            <Screen name='Reward' component={Reward} />
+        <Navigator
+            screenOptions={{ header: () => null }}
+            tabBar={props => <TabNavigator {...props} />}
+        >
+            <Screen name="Overview" component={Overview} />
+            <Screen name="History" component={History} />
+            <Screen
+                name="Transfers"
+                component={Transfer}
+                options={{ tabBarVisible: false }}
+            />
+            <Screen name="Statistic" component={Statistic} />
+            <Screen name="Reward" component={Reward} />
         </Navigator>
-    )
+    );
 }

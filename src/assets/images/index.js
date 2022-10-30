@@ -38,15 +38,27 @@ import IcTCat2 from './ic_transaction_cat2.png';
 import IcTCat3 from './ic_transaction_cat3.png';
 import IcTCat4 from './ic_transaction_cat4.png';
 import IcTCat5 from './ic_transaction_cat5.png';
+import IcEditProfile from './ic_edit_profile.png';
+import IcPin from './ic_pin.png';
+import IcWallet from './ic_wallet.png';
+import IcMyReward from './ic_reward.png';
+import IcHelp from './ic_help.png';
+import IcLogout from './ic_logout.png';
+
+// Dummy Image
+import DmPerson1 from './img_friend1.png';
 import DmTips1 from './img_tips1.png';
 import DmTips2 from './img_tips2.png';
 import DmTips3 from './img_tips3.png';
 import DmTips4 from './img_tips4.png';
 
-// Dummy Image
-import DmPerson1 from './img_friend1.png';
-
 export {
+    IcEditProfile,
+    IcPin,
+    IcWallet,
+    IcMyReward,
+    IcHelp,
+    IcLogout,
     IlOnboarding1,
     IlOnboarding2,
     IlOnboarding3,

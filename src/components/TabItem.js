@@ -41,7 +41,7 @@ const TabItem = ({ onPress, onLongPress, label, isFocused }) => {
                         ]}
                     />
                 );
-            case 'Transfer':
+            case 'Transfers':
                 return <IconPlus />;
             case 'Statistic':
                 return (
@@ -91,7 +91,7 @@ const TabItem = ({ onPress, onLongPress, label, isFocused }) => {
             style={styles.tab}
         >
             <Icon />
-            {label !== 'Transfer' && (
+            {label !== 'Transfers' && (
                 <Text
                     style={[
                         styles.label,
