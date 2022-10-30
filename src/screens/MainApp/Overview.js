@@ -112,6 +112,9 @@ const Overview = ({ navigation }) => {
     const findTopUp = data.find(
         item => item.transaction_type.code === 'top_up',
     );
+    const findReceive = data.find(
+        item => item.transaction_type.code === 'receive',
+    );
     const findInternet = data.find(
         item => item.transaction_type.code === 'internet',
     );
@@ -230,6 +233,17 @@ const Overview = ({ navigation }) => {
                                     time="Today"
                                     value={FormatMoney.getFormattedMoney(
                                         findTopUp?.amount,
+                                        '+',
+                                    )}
+                                />
+                            )}
+                            {findReceive && (
+                                <HistoryTransaction
+                                    icon={IcTCat1}
+                                    type="Receive"
+                                    time="Today"
+                                    value={FormatMoney.getFormattedMoney(
+                                        findReceive?.amount,
                                         '+',
                                     )}
                                 />

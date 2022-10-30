@@ -18,6 +18,7 @@ import {
     TopUpAmount,
     TopUpSuccess,
     Transfer,
+    DetailTransaction,
 } from '../../screens';
 import BottomNavigator from '../BottomNavigator';
 
@@ -47,6 +48,7 @@ export default function AppNavigator() {
             <Screen name="PaketData" component={PaketData} />
             <Screen name="Transfer" component={Transfer} />
             <Screen name="PINTransaction" component={PINTransaction} />
+            <Screen name="DetailTransaction" component={DetailTransaction} />
 
             {/* User */}
             <Screen name="ProfileUser" component={ProfileUser} />

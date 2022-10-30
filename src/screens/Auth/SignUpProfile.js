@@ -113,6 +113,7 @@ const SignUpProfile = ({ navigation }) => {
                             cursorColor={StaticColor.secondaryColor}
                             selectionColor="rgba(83, 193, 249, 0.4)"
                             maxLength={6}
+                            keyboardType="number-pad"
                         />
                         <Button
                             style={{ borderRadius: 30, height: 50 }}

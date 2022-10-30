@@ -22,6 +22,7 @@ import TopUpSuccess from './Transaction/TopUpSuccess';
 import BuyPulsa from './Transaction/BuyPulsa';
 import PaketData from './Transaction/PaketData';
 import PINTransaction from './Transaction/PINTransaction';
+import DetailTransaction from './Transaction/DetailTransaction';
 
 // User
 import ProfileUser from './User/ProfileUser';
@@ -30,6 +31,7 @@ import EditPinUser from './User/EditPinUser';
 import SuccessUpdate from './User/SuccessUpdate';
 
 export {
+    DetailTransaction,
     PINTransaction,
     SuccessUpdate,
     ProfileUser,

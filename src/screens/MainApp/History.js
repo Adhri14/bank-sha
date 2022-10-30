@@ -35,7 +35,7 @@ class History extends Component {
                     headers: { Authorization: `Bearer ${token.token}` },
                 })
                 .then(res => {
-                    console.log(res.data);
+                    console.log(res.data.data);
                     console.log(res.data.current_page);
                     // setCurrentPage(res.data.last_page);
                     this.setState({
@@ -84,11 +84,23 @@ class History extends Component {
                         data={this.state.data}
                         renderItem={({ item }) => (
                             <HistoryTransaction
+                                onPress={() =>
+                                    this.props.navigation.navigate(
+                                        'DetailTransaction',
+                                        {
+                                            item,
+                                        },
+                                    )
+                                }
                                 icon={
-                                    item.transaction_type.code === 'top_up'
+                                    item.transaction_type.code === 'top_up' ||
+                                    item.transaction_type.code === 'receive'
                                         ? IcTCat1
                                         : item.transaction_type.code ===
                                           'internet'
+                                        ? IcTCat5
+                                        : item.transaction_type.code ===
+                                          'transfer'
                                         ? IcTCat4
                                         : IcTCat5
                                 }
@@ -97,7 +109,10 @@ class History extends Component {
                                         ? 'Top Up'
                                         : item.transaction_type.code ===
                                           'internet'
-                                        ? 'Electric'
+                                        ? 'Data Plan'
+                                        : item.transaction_type.code ===
+                                          'receive'
+                                        ? 'Receive'
                                         : 'Transfer'
                                 }
                                 time={item.transaction_code}

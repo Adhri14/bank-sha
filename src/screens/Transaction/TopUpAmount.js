@@ -82,7 +82,6 @@ const TopUpAmount = ({ navigation, route }) => {
                         <Button
                             onPress={() => {
                                 addAmount(item.id);
-                                Vibration.vibrate();
                             }}
                             key={item.id}
                             size={22}
@@ -96,7 +95,6 @@ const TopUpAmount = ({ navigation, route }) => {
                         style={styles.button}
                         onPress={() => {
                             addAmount('0');
-                            Vibration.vibrate();
                         }}
                     >
                         0
@@ -106,7 +104,6 @@ const TopUpAmount = ({ navigation, route }) => {
                         style={styles.button}
                         onPress={() => {
                             addAmount('000');
-                            Vibration.vibrate();
                         }}
                     >
                         000
@@ -115,7 +112,6 @@ const TopUpAmount = ({ navigation, route }) => {
                         style={styles.button}
                         onPress={() => {
                             removeAmount();
-                            Vibration.vibrate();
                         }}
                     >
                         <Svg
