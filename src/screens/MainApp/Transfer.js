@@ -83,7 +83,6 @@ const Transfer = ({ navigation }) => {
                         type="semibold"
                         styleInput={{ backgroundColor: 'white' }}
                         placeholder="by username"
-                        keyboardType="number-pad"
                         value={search}
                         onChangeText={val => setSearch(val)}
                     />
