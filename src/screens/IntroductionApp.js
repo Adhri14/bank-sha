@@ -70,16 +70,13 @@ const IntroductionApp = ({ navigation }) => {
 
     useEffect(() => {
         setIsLoading(true);
-        console.log(setting);
         if (!setting.app) {
-            console.log('testing ini');
             getDataFromLocalStorge('userProfile').then(res => {
                 axios
                     .get(`${API_URL}/users`, {
                         headers: { Authorization: `Bearer ${res?.token}` },
                     })
                     .then(result => {
-                        console.log('hasil : ', result.data);
                         setIsLoading(false);
                         dispatch({
                             type: SET_USER,
@@ -91,18 +88,12 @@ const IntroductionApp = ({ navigation }) => {
                         setIsLoading(false);
                         console.log('error nya : ', errr.response);
                         if (errr.response.status === 401) {
-                            ToastMessage.show({
-                                message: errr.response.data?.message,
-                                type: 'danger',
-                                backgroundColor: StaticColor.errorColor,
-                            });
                             removeDataFromLocalStorage(['userProfile']);
                             redirectTo('SignIn');
                         }
                     });
             });
         } else {
-            console.log('masuk sini');
             setIsLoading(false);
         }
     }, [setting]);

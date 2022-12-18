@@ -23,7 +23,6 @@ const SignUpIDCard = ({ navigation }) => {
     const register = useSelector(state => state.register);
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
-    console.log('register', register);
 
     const onSubmit = useCallback(async () => {
         setIsLoading(true);
@@ -41,7 +40,6 @@ const SignUpIDCard = ({ navigation }) => {
                         headers: { Authorization: `Bearer ${data.token}` },
                     })
                     .then(result => {
-                        console.log(result.data);
                         setIsLoading(false);
                         dispatch({
                             type: SET_USER,

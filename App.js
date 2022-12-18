@@ -28,7 +28,6 @@ const MainApp = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         getDataFromLocalStorge(SETTING_APP).then(res => {
-            console.log('local : ', res);
             // removeDataFromLocalStorage(['userProfile']);
             if (res === true || res === null) {
                 dispatch({ type: SET_SETTING_APP, value: true });

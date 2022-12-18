@@ -6,6 +6,8 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
+import moment from 'moment';
+import 'moment/locale/id';
 import React, { useEffect, useRef, useState } from 'react';
 import {
     CardBlog,
@@ -230,7 +232,9 @@ const Overview = ({ navigation }) => {
                                 <HistoryTransaction
                                     icon={IcTCat1}
                                     type="Top Up"
-                                    time="Today"
+                                    time={moment(findTopUp?.created_at).format(
+                                        'DD MMMM YYYY',
+                                    )}
                                     value={FormatMoney.getFormattedMoney(
                                         findTopUp?.amount,
                                         '+',
@@ -241,7 +245,9 @@ const Overview = ({ navigation }) => {
                                 <HistoryTransaction
                                     icon={IcTCat1}
                                     type="Receive"
-                                    time="Today"
+                                    time={moment(
+                                        findReceive?.created_at,
+                                    ).format('DD MMMM YYYY')}
                                     value={FormatMoney.getFormattedMoney(
                                         findReceive?.amount,
                                         '+',
@@ -252,7 +258,9 @@ const Overview = ({ navigation }) => {
                                 <HistoryTransaction
                                     icon={IcTCat4}
                                     type="Send"
-                                    time="Today"
+                                    time={moment(
+                                        findTransfer?.created_at,
+                                    ).format('DD MMMM YYYY')}
                                     value={FormatMoney.getFormattedMoney(
                                         findTransfer?.amount,
                                         '-',
@@ -263,7 +271,9 @@ const Overview = ({ navigation }) => {
                                 <HistoryTransaction
                                     icon={IcTCat5}
                                     type="Electric"
-                                    time="Today"
+                                    time={moment(
+                                        findInternet?.created_at,
+                                    ).format('DD MMMM YYYY')}
                                     value={FormatMoney.getFormattedMoney(
                                         findInternet?.amount,
                                         '-',

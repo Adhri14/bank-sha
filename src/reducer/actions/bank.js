@@ -10,7 +10,6 @@ export const bankAction = () => dispatch => {
                 headers: { Authorization: `Bearer ${token.token}` },
             })
             .then(res => {
-                console.log(res.data);
                 dispatch({ type: GET_ALL_BANK, value: { data: res.data } });
             })
             .catch(err => {

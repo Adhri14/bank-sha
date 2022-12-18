@@ -10,7 +10,7 @@ import 'moment/locale/id';
 
 const DetailTransaction = ({ route }) => {
     const { item } = route.params;
-    console.log('item : ', item);
+    console.log('cek : ', item);
     return (
         <Scaffold
             useSafeArea
@@ -72,15 +72,6 @@ const DetailTransaction = ({ route }) => {
                     <Gap height={20} />
                     <Row justify="space-between">
                         <Text align="left" size={14} type="medium">
-                            Date
-                        </Text>
-                        <Text align="right" size={14} type="medium">
-                            {moment(item.created_at).format('DD MMMM YYYY')}
-                        </Text>
-                    </Row>
-                    <Gap height={15} />
-                    <Row justify="space-between">
-                        <Text align="left" size={14} type="medium">
                             No. Ref
                         </Text>
                         <Text align="right" size={14} type="medium">
@@ -90,10 +81,19 @@ const DetailTransaction = ({ route }) => {
                     <Gap height={15} />
                     <Row justify="space-between">
                         <Text align="left" size={14} type="medium">
+                            Date
+                        </Text>
+                        <Text align="right" size={14} type="medium">
+                            {moment(item.created_at).format('DD MMMM YYYY')}
+                        </Text>
+                    </Row>
+                    <Gap height={15} />
+                    <Row justify="space-between">
+                        <Text align="left" size={14} type="medium">
                             Time
                         </Text>
                         <Text align="right" size={14} type="medium">
-                            {moment(item.created_at).format('kk:mm:ss')}
+                            {moment(item.update_at).format('kk:mm:ss')}
                         </Text>
                     </Row>
                     <Gap height={15} />

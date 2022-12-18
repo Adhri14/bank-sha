@@ -30,7 +30,6 @@ const SignIn = ({ navigation }) => {
 
     const onSubmit = useCallback(() => {
         setIsLoading(true);
-        console.log('form : ', form);
         loginService(form)
             .then(res => {
                 if (res?.status === 400) {
@@ -50,7 +49,6 @@ const SignIn = ({ navigation }) => {
                             headers: { Authorization: `Bearer ${data.token}` },
                         })
                         .then(result => {
-                            console.log(result.data);
                             setIsLoading(false);
                             dispatch({
                                 type: SET_USER,

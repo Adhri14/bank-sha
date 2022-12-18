@@ -40,15 +40,15 @@ const EditPinUser = ({ navigation }) => {
             const { token } = await getDataFromLocalStorge('userProfile');
             const res = await updatePINService(form, token);
             if (res?.status === 400) {
+                console.log('error : ', res?.data);
+                setIsLoading(false);
                 return ToastMessage.show({
-                    message: `${JSON.stringify(res?.data?.errors)}`,
+                    message: `${res?.data?.message}`,
                     type: 'danger',
                     backgroundColor: StaticColor.errorColor,
                 });
             }
             const userResult = await userService(token);
-            console.log('hasil : ', res);
-            console.log('user : ', userResult);
 
             const data = {
                 token,
@@ -57,6 +57,7 @@ const EditPinUser = ({ navigation }) => {
             saveToLocalStorage('userProfile', data);
             navigation.replace('SuccessUpdate');
         } catch (error) {
+            setIsLoading(false);
             console.log(error);
         }
         setIsLoading(false);

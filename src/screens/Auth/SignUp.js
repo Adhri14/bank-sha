@@ -17,7 +17,6 @@ const SignUp = ({ navigation }) => {
     const inputRefPassword = useRef(null);
     const dispatch = useDispatch();
     const register = useSelector(state => state.register);
-    console.log('isi nya : ', register);
     const [form, setForm] = useState({
         name: '',
         email: '',

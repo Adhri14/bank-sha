@@ -40,8 +40,6 @@ const Transfer = ({ navigation }) => {
                     headers: { Authorization: `Bearer ${token.token}` },
                 })
                 .then(res => {
-                    console.log('user : ', res.data);
-
                     setUsers(res.data);
                 })
                 .catch(err => {

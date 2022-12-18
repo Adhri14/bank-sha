@@ -38,8 +38,7 @@ const ProfileUser = ({ navigation }) => {
     const onLogout = useCallback(async () => {
         try {
             const { token } = await getDataFromLocalStorge('userProfile');
-            const res = await logoutService(token);
-            console.log('hasil : ', res);
+            await logoutService(token);
             removeDataFromLocalStorage(['userProfile']);
 
             navigation.reset({ index: 0, routes: [{ name: 'SignIn' }] });

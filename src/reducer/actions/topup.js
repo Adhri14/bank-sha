@@ -6,7 +6,6 @@ import { getDataFromLocalStorge } from '../../storage';
 import StaticColor from '../../utils/Colors';
 
 export const topUpAction = (navigation, data) => () => {
-    console.log('data : ', data);
     getDataFromLocalStorge('userProfile').then(token => {
         axios
             .post(`${API_URL}/top_ups`, data, {

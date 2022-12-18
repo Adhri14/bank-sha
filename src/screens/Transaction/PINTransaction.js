@@ -38,9 +38,7 @@ const PINTransaction = ({ navigation, route }) => {
     ];
 
     useEffect(() => {
-        console.log('lempar : ', data);
         getDataFromLocalStorge('userProfile').then(res => {
-            console.log('data : ', res);
             const myPin = res?.pin;
             if (pin.length === 6) {
                 if (pin !== myPin) {
